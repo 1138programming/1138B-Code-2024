@@ -1,5 +1,13 @@
 #include "main.h"
+#include "NewLib/pids.h"
+#include "NewLib/chassis.h"
 
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::MotorGroup left_mg({1,-2,3}); // Creates a motor group with forwards ports 1 & 3 and reversed port 2
+pros::MotorGroup right_mg({-4,5,-6}); // Creates a motor group with forwards port 4 and reversed ports 4 & 6
+PID drivingPID(10,0,20,0,5,500,3,300);
+PID turningPID(1.6,0,20,0,5,500,3,300);
+Chassis myChassis(right_mg, left_mg, 10, 2.75, 36/48, drivingPID, turningPID);
 /**
  * A callback function for LLEMU's center button.
  *
@@ -58,8 +66,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
-
+void autonomous() {
+	myChassis.setDrivePID(24, 1500);
+	myChassis.waitUntilDone();
+}
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -74,9 +84,7 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::MotorGroup left_mg({1,-2,3}); // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-	pros::MotorGroup right_mg({-4,5,-6}); // Creates a motor group with forwards port 4 and reversed ports 4 & 6
+	
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
