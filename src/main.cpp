@@ -1,15 +1,15 @@
 #include "main.h"
-#include "NewLib/pids.h"
-#include "NewLib/chassis.h"
-#include "NewLib/regression.h"
-#include "coords.h"
+#include "BravoLib/pids.h"
+#include "BravoLib/chassis.h"
+#include "BravoLib/regression.h"
+#include "BravoLib/coords.h"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup left_mg({1,-2,3}); // Creates a motor group with forwards ports 1 & 3 and reversed port 2
 pros::MotorGroup right_mg({-4,5,-6}); // Creates a motor group with forwards port 4 and reversed ports 4 & 6
-Regression testReg({Coord(0.5,1), Coord(1,2)});
-PID drivingPID(10,0,20,0,testReg);
-Chassis myChassis(right_mg, left_mg, 10, 2.75, 36, 48, drivingPID, drivingPID);
+BravoLib::Regression testReg({Coord(5,500), Coord(3,300)});
+BravoLib::PID drivingPID(10,0,20,0,testReg);
+BravoLib::Chassis myChassis(right_mg, left_mg, 10, 2.75, 36, 48, drivingPID, drivingPID);
 /**
  * A callback function for LLEMU's center button.
  *

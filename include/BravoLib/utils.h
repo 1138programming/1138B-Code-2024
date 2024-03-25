@@ -1,5 +1,7 @@
 #include <vector>
 
+namespace BravoLib {
+
 double clamp(double value, double min, double max);
 /**
  * @brief Calculates the average of a vector of any type.
@@ -14,4 +16,5 @@ template <typename T> T avg(const std::vector<T> &vec) {
     T sum = T();  // Initialize sum to default value for T
     for (const T &elem : vec) { sum += elem; }
     return sum / vec.size();
+}
 }

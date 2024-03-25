@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "coords.h"
+namespace BravoLib {
+
 
 /**
  * @class Regression
@@ -43,3 +45,5 @@ class Regression {
         double predict(double x);
 
 };
+
+}

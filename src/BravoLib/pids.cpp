@@ -1,7 +1,9 @@
 #include <chrono>
-#include "pids.h"
-#include "functions.h"
-#include "regression.h"
+#include "BravoLib/pids.h"
+#include "BravoLib/utils.h"
+#include "BravoLib/regression.h"
+
+namespace BravoLib {
 
 PID::PID(double kp_, double ki_, double kd_, double slewRate_, Regression regression) :
     kp(kp_),
@@ -63,3 +65,4 @@ bool PID::isConverged(int timeout_ms) {
     return regressionExit || timeoutExit;
 }
 
+}

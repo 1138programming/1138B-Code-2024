@@ -1,5 +1,7 @@
-#include "regression.h"
-#include "functions.h"
+#include "BravoLib/regression.h"
+#include "BravoLib/utils.h"
+
+namespace BravoLib {
 
 // Constructor for the Regression class
 Regression::Regression(std::vector<Coord> points) : points(points) {}
@@ -42,4 +44,6 @@ double Regression::predict(double x) {
     double m = coefficients.first;
     double b = coefficients.second;
     return m * x + b;
+}
+
 }

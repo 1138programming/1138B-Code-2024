@@ -1,7 +1,9 @@
 #include "pros/motor_group.hpp"
 #include "math.h"
-#include "chassis.h"
-#include "functions.h"
+#include "BravoLib/chassis.h"
+#include "BravoLib/utils.h"
+
+namespace BravoLib {
 
 // Private method to calculate ticks per inch based on wheel diameter, ticks per revolution, and gear ratio
 double Chassis::calculateTickPerInch() {
@@ -83,4 +85,5 @@ void Chassis::waitUntilDone() {
 
         pros::delay(20); // Delay to prevent hogging CPU
     }
+}
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 #include "regression.h"
-
+namespace BravoLib {
 class PID {
 private:
     double setpoint; // Desired value
@@ -23,3 +23,4 @@ public:
     void setSetpoint(double newSetpoint);
     double update(double measured_value);
 };
+}

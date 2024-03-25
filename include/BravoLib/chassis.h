@@ -4,6 +4,7 @@
 #include "pros/motor_group.hpp"
 #include "pros/imu.hpp"
 #include "pids.h"
+namespace BravoLib {
 
 class Chassis {
 private:
@@ -31,5 +32,5 @@ public:
 
     // Additional methods...
 };
-
+}
 #endif // CHASSIS_H
