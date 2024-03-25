@@ -1,9 +1,8 @@
 #ifndef CHASSIS_H
 #define CHASSIS_H
 #pragma once
-#include <vector>
-#include <cmath>
-#include "api.h" // Ensure this includes definition for pros::MotorGroup, pros::Mutex, etc.
+#include "pros/motor_group.hpp"
+#include "pros/imu.hpp"
 #include "pids.h"
 
 class Chassis {
@@ -17,12 +16,13 @@ private:
     pros::Imu imu;
     double wheelDiameter;
     double ticksPerRevolution;
-    double gearRatio;
+    double drivingGear;
+    double drivenGear;
     double tickPerInch;
     double calculateTickPerInch();
 
 public:
-    Chassis(pros::MotorGroup& left, pros::MotorGroup& right, int imuPort, double wheelDiameterInches, double ratio, PID& drivePID, PID& turnPID);
+    Chassis(pros::MotorGroup& left, pros::MotorGroup& right, int imuPort, double wheelDiameterInches, double drivingGear, double drivenGear, PID& drivePID, PID& turnPID);
     double getLeftPosition();
     double getRightPosition();
     void setDrivePID(double distance, int timeout);

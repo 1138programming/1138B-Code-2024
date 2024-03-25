@@ -1,17 +1,17 @@
-#include <vector>
-#include <cmath>
-#include "api.h"
+#include "pros/motor_group.hpp"
+#include "math.h"
 #include "chassis.h"
 #include "functions.h"
 
 // Private method to calculate ticks per inch based on wheel diameter, ticks per revolution, and gear ratio
 double Chassis::calculateTickPerInch() {
+    double gearRatio = drivingGear/drivenGear;
     double wheelCircumference = wheelDiameter * M_PI;
     return (ticksPerRevolution * gearRatio) / wheelCircumference;
 }
 
-Chassis::Chassis(pros::MotorGroup& left, pros::MotorGroup& right, int imuPort, double wheelDiameterInches, double ratio, PID& drivePID, PID& turnPID)
-    : leftMotors(left), rightMotors(right), imu(imuPort), wheelDiameter(wheelDiameterInches), ticksPerRevolution(360), gearRatio(ratio), drivePID(drivePID), turnPID(turnPID), pidTaskRunning(false) {
+Chassis::Chassis(pros::MotorGroup& left, pros::MotorGroup& right, int imuPort, double wheelDiameterInches, double drivingGear, double drivenGean, PID& drivePID, PID& turnPID)
+    : leftMotors(left), rightMotors(right), imu(imuPort), wheelDiameter(wheelDiameterInches), ticksPerRevolution(360), drivingGear(drivingGear), drivenGear(drivenGean), drivePID(drivePID), turnPID(turnPID), pidTaskRunning(false) {
     tickPerInch = calculateTickPerInch();
 }
 

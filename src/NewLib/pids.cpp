@@ -1,16 +1,14 @@
-#include <iostream>
 #include <chrono>
 #include "pids.h"
 #include "functions.h"
-PID::PID(double kp_, double ki_, double kd_, double slewRate_, double largeExitRange, double largeExitTimeout, double smallExitRange, double smallExitTimeout) :
+#include "regression.h"
+
+PID::PID(double kp_, double ki_, double kd_, double slewRate_, Regression regression) :
     kp(kp_),
     ki(ki_),
     kd(kd_),
     slewRate(slewRate_),
-    largeExitRange(largeExitRange),
-    largeExitTimeout(largeExitTimeout),
-    smallExitRange(smallExitRange),
-    smallExitTimeout(smallExitTimeout),
+    regression(regression),
     setpoint(0),
     integral(0),
     last_error(0), 
@@ -52,21 +50,16 @@ double PID::update(double measured_value) {
     return output;
 }
 
-bool PID::isConverged(int timeout_ms) const {
+bool PID::isConverged(int timeout_ms) {
     // Assuming largeErrorRange, smallErrorRange, largeErrorTimeout,
     // and smallErrorTimeout are members of the PID class
-    bool largeExit = std::abs(last_error) <= largeExitRange &&
-                     std::chrono::duration_cast<std::chrono::milliseconds>(
-                         std::chrono::steady_clock::now() - last_time).count() >= largeExitTimeout;
-
-    bool smallExit = std::abs(last_error) <= smallExitRange &&
-                     std::chrono::duration_cast<std::chrono::milliseconds>(
-                         std::chrono::steady_clock::now() - last_time).count() >= largeExitRange;
+    bool regressionExit = std::chrono::duration_cast<std::chrono::milliseconds>(
+                             std::chrono::steady_clock::now() - last_time).count() >= regression.predict(std::abs(last_error));
 
     // You can define more exit conditions as needed
     bool timeoutExit = std::chrono::duration_cast<std::chrono::milliseconds>(
                              std::chrono::steady_clock::now() - last_time).count() >= timeout_ms;
     // Return true if any exit condition is met
-    return largeExit || smallExit || timeoutExit;
+    return regressionExit || timeoutExit;
 }
 
