@@ -17,4 +17,6 @@ template <typename T> T avg(const std::vector<T> &vec) {
     for (const T &elem : vec) { sum += elem; }
     return sum / vec.size();
 }
+double radiansToDegrees(double radians);
+double degreesToRadians(double degrees);
 }

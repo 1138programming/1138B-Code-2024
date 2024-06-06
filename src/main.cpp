@@ -3,13 +3,19 @@
 #include "BravoLib/chassis.h"
 #include "BravoLib/regression.h"
 #include "BravoLib/coords.h"
+#include "BravoLib/Display/display.h"
+#include "pros/abstract_motor.hpp"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup left_mg({1,-2,3}); // Creates a motor group with forwards ports 1 & 3 and reversed port 2
 pros::MotorGroup right_mg({-4,5,-6}); // Creates a motor group with forwards port 4 and reversed ports 4 & 6
+pros ::Motor intake(9, pros::v5::MotorGears::blue);
 BravoLib::Regression testReg({Coord(5,500), Coord(3,300)});
 BravoLib::PID drivingPID(10,0,20,0,testReg);
 BravoLib::Chassis myChassis(right_mg, left_mg, 10, 2.75, 36, 48, drivingPID, drivingPID);
+
+
+
 /**
  * A callback function for LLEMU's center button.
  *
@@ -37,6 +43,8 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+
+	myChassis.calibrate();
 }
 
 /**
@@ -45,7 +53,6 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {}
-
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
  * Management System or the VEX Competition Switch. This is intended for

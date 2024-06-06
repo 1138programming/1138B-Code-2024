@@ -13,8 +13,8 @@ private:
     PID& drivePID;
     PID& turnPID;
     pros::Mutex pidMutex;
+    int imuPort;
     bool pidTaskRunning;
-    pros::Imu imu;
     double wheelDiameter;
     double ticksPerRevolution;
     double drivingGear;
@@ -24,10 +24,14 @@ private:
 
 public:
     Chassis(pros::MotorGroup& left, pros::MotorGroup& right, int imuPort, double wheelDiameterInches, double drivingGear, double drivenGear, PID& drivePID, PID& turnPID);
+    pros::Imu imu;
+    void calibrate(); 
     double getLeftPosition();
     double getRightPosition();
     void setDrivePID(double distance, int timeout);
-    static void pidTaskFn(void* param);
+    void setTurnPID(double distance, int timeout);
+    static void DrivePIDTaskFn(void* param);
+    static void TurnPIDTaskFn(void* param);
     void waitUntilDone();
 
     // Additional methods...

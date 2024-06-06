@@ -1,7 +1,7 @@
-#include <chrono>
 #include "BravoLib/pids.h"
 #include "BravoLib/utils.h"
 #include "BravoLib/regression.h"
+#include "pros/rtos.hpp"
 
 namespace BravoLib {
 
@@ -24,14 +24,14 @@ void PID::setSetpoint(double newSetpoint) {
 double PID::update(double measured_value) {
     // Initialize time
     if (!initialized) {
-        last_time = std::chrono::steady_clock::now();
+        last_time = pros::millis();
         last_output = 0;
         initialized = true;
         return 0;
     }
 
-    auto now = std::chrono::steady_clock::now();
-    double dt = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time).count() / 1000.0;
+    float ct = pros::millis();
+    double dt = (ct - last_time) / 1000.0;
 
     if (dt <= 0) return 0;
 
@@ -46,21 +46,18 @@ double PID::update(double measured_value) {
     output = std::max(std::min(output, last_output + max_change), last_output - max_change);
     // Update for next call
     last_error = error;
-    last_time = now;
+    last_time = ct;
     output = clamp(output, -127, 127);
     last_output = output;
     return output;
 }
 
-bool PID::isConverged(int timeout_ms) {
-    // Assuming largeErrorRange, smallErrorRange, largeErrorTimeout,
-    // and smallErrorTimeout are members of the PID class
-    bool regressionExit = std::chrono::duration_cast<std::chrono::milliseconds>(
-                             std::chrono::steady_clock::now() - last_time).count() >= regression.predict(std::abs(last_error));
+bool PID::isConverged(int timeout_ms, float start_time) {
+    //compare against all possible exit timeouts using a linear regression algorithm
+    bool regressionExit = pros::millis() - last_time >= regression.predict(std::abs(last_error));
 
-    // You can define more exit conditions as needed
-    bool timeoutExit = std::chrono::duration_cast<std::chrono::milliseconds>(
-                             std::chrono::steady_clock::now() - last_time).count() >= timeout_ms;
+    // compare the overall time the pid loop has taken more time that the timeout allows
+    bool timeoutExit = start_time - pros::millis() >= timeout_ms;
     // Return true if any exit condition is met
     return regressionExit || timeoutExit;
 }
