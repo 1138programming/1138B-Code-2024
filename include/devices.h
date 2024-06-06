@@ -3,6 +3,8 @@
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/imu.hpp"
+#include "pros/misc.h"
+#include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "lemlib/api.hpp"
 #include "pros/rotation.hpp"
@@ -17,6 +19,10 @@ inline pros::MotorGroup right_motors({4, 5, 6}, pros::MotorGearset::blue);
 inline pros::IMU imu(9);
 inline pros::Rotation vertTracking(10);
 inline pros::Rotation horzTracking(11);
+
+// controllers
+
+inline pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 // LEMLIB
 

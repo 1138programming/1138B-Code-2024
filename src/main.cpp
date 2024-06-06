@@ -1,4 +1,7 @@
 #include "main.h"
+#include "devices.h"
+#include "lemlib/chassis/chassis.hpp"
+#include "pros/misc.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -83,7 +86,8 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0); // Prints status of the emulated screen LCDs
 						 
-		// Arcade control scheme
+		// Tank
+		chassis.tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
 		pros::delay(20); // Run for 20 ms then update
 	}
 }
