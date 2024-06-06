@@ -1,20 +1,4 @@
 #include "main.h"
-#include "BravoLib/pids.h"
-#include "BravoLib/chassis.h"
-#include "BravoLib/regression.h"
-#include "BravoLib/coords.h"
-#include "BravoLib/Display/display.h"
-#include "pros/abstract_motor.hpp"
-
-pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup left_mg({1,-2,3}); // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-pros::MotorGroup right_mg({-4,5,-6}); // Creates a motor group with forwards port 4 and reversed ports 4 & 6
-pros ::Motor intake(9, pros::v5::MotorGears::blue);
-BravoLib::Regression testReg({Coord(5,500), Coord(3,300)});
-BravoLib::PID drivingPID(10,0,20,0,testReg);
-BravoLib::Chassis myChassis(right_mg, left_mg, 10, 2.75, 36, 48, drivingPID, drivingPID);
-
-
 
 /**
  * A callback function for LLEMU's center button.
@@ -44,7 +28,6 @@ void initialize() {
 
 	pros::lcd::register_btn1_cb(on_center_button);
 
-	myChassis.calibrate();
 }
 
 /**
@@ -76,8 +59,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	myChassis.setDrivePID(24, 1500);
-	myChassis.waitUntilDone();
+
 }
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -101,10 +83,6 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0); // Prints status of the emulated screen LCDs
 						 
 		// Arcade control scheme
-		int dir = master.get_analog(ANALOG_LEFT_Y); // Gets amount forward/backward from left joystick
-		int turn = master.get_analog(ANALOG_RIGHT_X); // Gets the turn left/right from right joystick
-		left_mg = dir - turn; // Sets left motor voltage
-		right_mg = dir + turn; // Sets right motor voltage
 		pros::delay(20); // Run for 20 ms then update
 	}
 }
