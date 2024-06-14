@@ -1,18 +1,14 @@
 #pragma once
-#include "lemlib/chassis/chassis.hpp"
-#include "lemlib/chassis/trackingWheel.hpp"
-#include "pros/abstract_motor.hpp"
-#include "pros/imu.hpp"
-#include "pros/misc.h"
-#include "pros/misc.hpp"
-#include "pros/motor_group.hpp"
+#include "api.h"
 #include "lemlib/api.hpp"
-#include "pros/rotation.hpp"
 
 // motors
 
-inline pros::MotorGroup left_motors({1, 2, 3}, pros::MotorGearset::blue);
-inline pros::MotorGroup right_motors({4, 5, 6}, pros::MotorGearset::blue);
+inline pros::MotorGroup left_motors({11, 12, 13}, pros::MotorGearset::blue);
+inline pros::MotorGroup right_motors({14, 15, 16}, pros::MotorGearset::blue);
+
+inline pros::Motor intake1(-3, pros::MotorGearset::blue);
+inline pros::Motor intake2(-8, pros::MotorGearset::blue);
 
 // sensors
 
