@@ -1,8 +1,6 @@
 #include "main.h"
 #include "systems/drive.hpp"
-#include "systems/classes.hpp"
 #include "systems/controlscheme.hpp"
-#include "pros/misc.h"
 
 /**
  * A callback function for LLEMU's center button.

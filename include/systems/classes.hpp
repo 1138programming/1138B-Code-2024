@@ -1,6 +1,5 @@
 #pragma once
 #include "api.h"
-#include "pros/adi.hpp"
 
 // class definitions
 class Intake {

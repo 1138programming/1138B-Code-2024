@@ -226,6 +226,8 @@ typedef enum {
 	E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
+#define PROS_USE_SIMPLE_NAMES
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define CONTROLLER_MASTER pros::E_CONTROLLER_MASTER
