@@ -1,5 +1,7 @@
 #include "main.h"
-#include "devices.h"
+#include "systems/drive.hpp"
+#include "systems/classes.hpp"
+#include "systems/controlscheme.hpp"
 #include "pros/misc.h"
 
 /**
@@ -79,30 +81,14 @@ void autonomous() {
  */
 void opcontrol() {
 	
-	intake1.move_velocity(600);
-	float intakeSpeed = 300;
 	while (true) {
-
-		if (master.get_digital_new_press(DIGITAL_UP)) {
-			intakeSpeed += 10;
-			master.print(0,0,"%f", intakeSpeed);
-		}
-		else if (master.get_digital_new_press(DIGITAL_DOWN)) {
-			intakeSpeed -= 10;
-			master.print(0,0,"%f", intakeSpeed);
-		}
-		else if (master.get_digital_new_press(DIGITAL_LEFT)) {
-			intakeSpeed = -intakeSpeed;
-		};
-
-		intake2.move_velocity(intakeSpeed);
-
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0); // Prints status of the emulated screen LCDs
 						 
-		// Tank
-		chassis.tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+		driveControl();
+		intakeControl();
+		mogoControl();
 		pros::delay(20); // Run for 20 ms then update
 	}
 }

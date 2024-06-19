@@ -7,18 +7,12 @@
 inline pros::MotorGroup left_motors({11, 12, 13}, pros::MotorGearset::blue);
 inline pros::MotorGroup right_motors({14, 15, 16}, pros::MotorGearset::blue);
 
-inline pros::Motor intake1(-3, pros::MotorGearset::blue);
-inline pros::Motor intake2(-8, pros::MotorGearset::blue);
-
 // sensors
 
 inline pros::IMU imu(9);
 inline pros::Rotation vertTracking(10);
 inline pros::Rotation horzTracking(11);
 
-// controllers
-
-inline pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 // LEMLIB
 
