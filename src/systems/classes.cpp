@@ -16,6 +16,12 @@ void Intake::Out() {
     flipper.move_velocity(-flipperSpeed);
 }
 
+void Intake::Stop() {
+    floating.move(0);
+    flipper.move(0);
+}
+
+
 void Intake::setFloatingSpeed(int speed) {
     Intake::floatingSpeed = speed;
 }
@@ -39,9 +45,9 @@ void Mogo::cycleState() {
 }
 
 void Mogo::fullPosToggle() {
-    if (currentState != 2) {
+    if (currentState < 2) {
         currentState = 2;
-    } else if (currentState == 2) {
+    } else {
         currentState = 0;
     };
 }

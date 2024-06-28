@@ -4,9 +4,10 @@
 #include "systems/intake.hpp"
 #include "systems/mogo.hpp"
 
+bool lastFire = false;
 // DT Controls
 void driveControl() {
-    chassis.tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    chassis.arcade(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_X));
 }
 
 // Intake Buttons
@@ -15,6 +16,9 @@ void intakeControl() {
         Intake.In();
     } else if (master.get_digital(DIGITAL_R1)) {
         Intake.Out();
+    }
+    else {
+        Intake.Stop();
     };
 }
 
@@ -25,7 +29,8 @@ void mogoControl() {
         MogoMech.dropGoal();
     } else if (master.get_digital_new_press(DIGITAL_L2) && !master.get_digital(DIGITAL_DOWN)) {
         MogoMech.cycleState();
-    } else if (master.get_digital_new_press(DIGITAL_L2) && master.get_digital(DIGITAL_DOWN)) {
+    };
+    if (master.get_digital(DIGITAL_RIGHT) && master.get_digital_new_press(DIGITAL_L2)) {
         MogoMech.fullPosToggle();
-    }
+    };
 }

@@ -8,6 +8,7 @@ class Intake {
         Intake(pros::Motor floating, pros::Motor flipper); // allow for 2 seperate motors, as we have two
         void In();
         void Out();
+        void Stop();
         void setFloatingSpeed(int speed); // set the speed for the floating stage
         void setFlipperSpeed(int speed); // set the speed for the upper stage that scores the rings
 
