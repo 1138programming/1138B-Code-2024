@@ -4,14 +4,14 @@
 
 // motors
 
-inline pros::MotorGroup left_motors({-7, -19, 20}, pros::MotorGearset::blue);
-inline pros::MotorGroup right_motors({6, -11, 12}, pros::MotorGearset::blue);
+inline pros::MotorGroup left_motors({-11, 10, -2}, pros::MotorGearset::blue);
+inline pros::MotorGroup right_motors({12, -18, 20}, pros::MotorGearset::blue);
 
 // sensors
 
-inline pros::IMU imu(20);
+inline pros::IMU imu(19);
 inline pros::Rotation vertTracking(21);
-inline pros::Rotation horzTracking(11);
+inline pros::Rotation horzTracking(17);
 
 
 // LEMLIB

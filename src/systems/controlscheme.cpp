@@ -1,4 +1,5 @@
 #include "api.h"
+#include "pros/misc.h"
 #include "systems/controlscheme.hpp"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
@@ -30,7 +31,8 @@ void mogoControl() {
     } else if (master.get_digital_new_press(DIGITAL_L2) && !master.get_digital(DIGITAL_DOWN)) {
         MogoMech.cycleState();
     };
-    if (master.get_digital(DIGITAL_RIGHT) && master.get_digital_new_press(DIGITAL_L2)) {
-        MogoMech.fullPosToggle();
-    };
+
+    if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+        doinker.toggle();
+    }
 }

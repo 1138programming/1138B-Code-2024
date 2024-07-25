@@ -29,7 +29,7 @@ void initialize() {
 	pros::lcd::initialize();
 	chassis.calibrate();
 	Intake.setFloatingSpeed(600);
-	Intake.setFlipperSpeed(295);
+	Intake.setFlipperSpeed(600);
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);

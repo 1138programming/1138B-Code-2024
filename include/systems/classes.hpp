@@ -22,7 +22,7 @@ class Intake {
 
 class Mogo {
     public:
-        Mogo(pros::adi::Pneumatics clampPiston, pros::adi::Pneumatics tiltPiston); // set a constructor for two pistons, as that is what our system requires
+        Mogo(pros::adi::Pneumatics clampPiston); // set a constructor for two pistons, as that is what our system requires
         void cycleState();
         void fullPosToggle();
         void dropGoal();
@@ -32,6 +32,5 @@ class Mogo {
 
     private:
         pros::adi::Pneumatics clampPiston;
-        pros::adi::Pneumatics tiltPiston;
         int currentState; // 0 = no clamp/tilt, 1 = clamp, 2 = clamp + tilt
 };
