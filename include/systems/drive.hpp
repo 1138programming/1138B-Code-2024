@@ -10,8 +10,6 @@ inline pros::MotorGroup right_motors({12, -18, 20}, pros::MotorGearset::blue);
 // sensors
 
 inline pros::IMU imu(19);
-inline pros::Rotation vertTracking(21);
-inline pros::Rotation horzTracking(17);
 
 
 // LEMLIB
@@ -34,29 +32,12 @@ inline lemlib::Drivetrain drivetrain(
 
 // tracking wheels
 
-//vertical tracking
-
-inline int horzOffset = 0; // set the offset for the vertical wheel (+ = Right, - = Left)
-inline lemlib::TrackingWheel vertTrackingWheel(
-    &vertTracking, // set the tracking wheel to use the rotation sensor on the vertical wheel
-    lemlib::Omniwheel::NEW_2, // set the tracking wheel to use the new 2" omni wheels
-    horzOffset // set the offset for the tracking wheel
-);
-
-// horizontal tracking
-
-inline int vertOffset = 0; // set the offset for the horizontal wheel (+ = Right, - = Left)
-inline lemlib::TrackingWheel horzTrackingWheel(
-    &horzTracking, // set the tracking wheel to use the rotation sensor on the horizontal wheel
-    lemlib::Omniwheel::NEW_2, // set the tracking wheel to use the new 2" omni wheels
-    vertOffset // set the offset for the tracking wheel
-);
 
 // odom settings
 
-inline lemlib::OdomSensors OdomSensors(&vertTrackingWheel, // vertical tracking wheel 1, set to null
+inline lemlib::OdomSensors OdomSensors(nullptr, // vertical tracking wheel 1, set to null
                             nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                            &horzTrackingWheel, // horizontal tracking wheel 1
+                            nullptr, // horizontal tracking wheel 1
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
