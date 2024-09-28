@@ -4,12 +4,18 @@
 
 // motors
 
-inline pros::MotorGroup left_motors({-10, -6, 7}, pros::MotorGearset::blue);
-inline pros::MotorGroup right_motors({3, 2, -1}, pros::MotorGearset::blue);
+inline pros::MotorGroup left_motors({-16, -14, 15}, pros::MotorGearset::blue);
+inline pros::MotorGroup right_motors({10, 19, -20}, pros::MotorGearset::blue);
 
 // sensors
 
+<<<<<<< Updated upstream
 inline pros::IMU imu(19);
+=======
+inline pros::IMU imu(1);
+inline pros::Rotation vertTracking(2);
+inline pros::Rotation horzTracking(3);
+>>>>>>> Stashed changes
 
 
 // LEMLIB
