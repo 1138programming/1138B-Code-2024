@@ -25,14 +25,7 @@ void intakeControl() {
 
 // Mogo Control
 void mogoControl() {
-    MogoMech.update();
-    if (master.get_digital(DIGITAL_L1)) {
-        MogoMech.dropGoal();
-    } else if (master.get_digital_new_press(DIGITAL_L2) && !master.get_digital(DIGITAL_DOWN)) {
-        MogoMech.cycleState();
-    };
-
-    if (master.get_digital_new_press(DIGITAL_RIGHT)) {
-        doinker.toggle();
+    if (master.get_digital_new_press(DIGITAL_L2)) {
+        MogoMech.toggle();
     }
 }

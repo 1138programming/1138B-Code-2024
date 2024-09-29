@@ -23,14 +23,10 @@ class Intake {
 class Mogo {
     public:
         Mogo(pros::adi::Pneumatics clampPiston); // set a constructor for two pistons, as that is what our system requires
-        void cycleState();
-        void fullPosToggle();
-        void dropGoal();
-        void update();
-        bool clampState;
-        bool tiltState;
+        void clamp();
+        void release();
+        void toggle();
 
     private:
         pros::adi::Pneumatics clampPiston;
-        int currentState; // 0 = no clamp/tilt, 1 = clamp, 2 = clamp + tilt
 };

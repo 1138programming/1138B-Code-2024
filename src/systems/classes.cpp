@@ -33,36 +33,17 @@ void Intake::setFlipperSpeed(int speed) {
 
 // mogo
 Mogo::Mogo(pros::adi::Pneumatics clampPiston)
-    : clampPiston(clampPiston), currentState(0) {}
+    : clampPiston(clampPiston) {}
 
-void Mogo::cycleState() {
+void Mogo::clamp() {
     // Increment the state or reset to 0 if it reaches 2
-    if (currentState < 2) {
-        currentState += 1;
-    } else {
-        currentState = 0;
-    };
+    clampPiston.extend();
 }
 
-void Mogo::fullPosToggle() {
-    if (currentState < 2) {
-        currentState = 2;
-    } else {
-        currentState = 0;
-    };
+void Mogo::release() {
+    clampPiston.retract();
 }
 
-void Mogo::dropGoal() {
-    currentState = 0;
-}
-
-void Mogo::update() {
-    // Control the pistons based on the current state
-    if (currentState == 0) {
-        clampPiston.retract();
-    } else if (currentState == 1) {
-        clampPiston.extend();
-    } else if (currentState == 2) {
-        clampPiston.extend();
-    };
+void Mogo::toggle() {
+    clampPiston.toggle();
 }

@@ -2,6 +2,7 @@
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/controlscheme.hpp"
+#include "autos.hpp"
 
 /**
  * A callback function for LLEMU's center button.
@@ -65,7 +66,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-
+	soloAWP();
 }
 /**
  * Runs the operator control code. This function will be started in its own task

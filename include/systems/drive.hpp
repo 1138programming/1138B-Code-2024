@@ -9,21 +9,17 @@ inline pros::MotorGroup right_motors({10, 19, -20}, pros::MotorGearset::blue);
 
 // sensors
 
-<<<<<<< Updated upstream
-inline pros::IMU imu(19);
-=======
-inline pros::IMU imu(1);
-inline pros::Rotation vertTracking(2);
-inline pros::Rotation horzTracking(3);
->>>>>>> Stashed changes
+inline pros::IMU imu(12);
+// inline pros::Rotation vertTracking(2);
+// inline pros::Rotation horzTracking(3);
 
 
 // LEMLIB
 
-inline int trackWidth = 10;
+inline double trackWidth = 11.5;
 inline int WheelSize = lemlib::Omniwheel::NEW_325;
 inline int DriveRPM = 400;
-inline int HorzDrift = 2;
+inline int HorzDrift = 8;
 
 // drivetrain settings
 
@@ -52,7 +48,7 @@ inline lemlib::OdomSensors OdomSensors(nullptr, // vertical tracking wheel 1, se
 
 // Lateral PID
 
-inline lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
+inline lemlib::ControllerSettings lateral_controller(6, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               3, // derivative gain (kD)
                                               3, // anti windup
@@ -60,12 +56,12 @@ inline lemlib::ControllerSettings lateral_controller(10, // proportional gain (k
                                               100, // small error range timeout, in milliseconds
                                               3, // large error range, in inches
                                               500, // large error range timeout, in milliseconds
-                                              20 // maximum acceleration (slew)
+                                              10 // maximum acceleration (slew)
 );
 
 // Angular PID
 
-inline lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
+inline lemlib::ControllerSettings angular_controller(1, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               10, // derivative gain (kD)
                                               3, // anti windup
