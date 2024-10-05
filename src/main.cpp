@@ -72,8 +72,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	soloAwpBlue();
-	// mySelector.run_auton();
+	mySelector.run_auton();
 }
 /**
  * Runs the operator control code. This function will be started in its own task
