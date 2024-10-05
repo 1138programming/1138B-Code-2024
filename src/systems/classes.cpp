@@ -47,3 +47,20 @@ void Mogo::release() {
 void Mogo::toggle() {
     clampPiston.toggle();
 }
+
+// doinker
+Doinker::Doinker(pros::adi::Pneumatics doinkPiston)
+    : doinkPiston(doinkPiston) {}
+
+void Doinker::down() {
+    // Increment the state or reset to 0 if it reaches 2
+    doinkPiston.extend();
+}
+
+void Doinker::up() {
+    doinkPiston.retract();
+}
+
+void Doinker::toggle() {
+    doinkPiston.toggle();
+}

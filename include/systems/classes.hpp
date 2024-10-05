@@ -30,3 +30,14 @@ class Mogo {
     private:
         pros::adi::Pneumatics clampPiston;
 };
+
+class Doinker {
+    public:
+        Doinker(pros::adi::Pneumatics doinkPiston); // set a constructor for two pistons, as that is what our system requires
+        void down();
+        void up();
+        void toggle();
+
+    private:
+        pros::adi::Pneumatics doinkPiston;
+};

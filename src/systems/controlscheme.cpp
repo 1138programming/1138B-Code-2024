@@ -4,6 +4,7 @@
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/mogo.hpp"
+#include "systems/doinker.hpp"
 
 bool lastFire = false;
 // DT Controls
@@ -28,4 +29,14 @@ void mogoControl() {
     if (master.get_digital_new_press(DIGITAL_L2)) {
         MogoMech.toggle();
     }
+}
+
+// Doinker Control
+void doinkerControl() {
+    if (master.get_digital(DIGITAL_Y)) {
+        stackDoinker.down();
+    }
+    else {
+        stackDoinker.up();
+    };
 }

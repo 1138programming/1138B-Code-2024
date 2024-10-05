@@ -1,8 +1,14 @@
 #include "main.h"
+#include "pros/motors.h"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
+
+rd::Selector mySelector({
+    {"Blue Ring Side", &ringSideBlue},
+	{"Blue Solo AWP", &soloAwpBlue}
+});
 
 /**
  * A callback function for LLEMU's center button.
@@ -10,15 +16,15 @@
  * When this callback is fired, it will toggle line 2 of the LCD text between
  * "I was pressed!" and nothing.
  */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+// void on_center_button() {
+// 	static bool pressed = false;
+// 	pressed = !pressed;
+// 	if (pressed) {
+// 		pros::lcd::set_text(2, "I was pressed!");
+// 	} else {
+// 		pros::lcd::clear_line(2);
+// 	}
+// }
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -27,14 +33,13 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
+	//pros::lcd::initialize();
 	chassis.calibrate();
 	Intake.setFloatingSpeed(600);
 	Intake.setFlipperSpeed(600);
-	pros::lcd::set_text(1, "Hello PROS User!");
-
-	pros::lcd::register_btn1_cb(on_center_button);
-
+	//pros::lcd::set_text(1, "Hello PROS User!");
+	//pros::lcd::register_btn1_cb(on_center_button);
+	mySelector.focus();
 }
 
 /**
@@ -66,7 +71,9 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	soloAWP();
+	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+	soloAwpBlue();
+	// mySelector.run_auton();
 }
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -91,6 +98,7 @@ void opcontrol() {
 		driveControl();
 		intakeControl();
 		mogoControl();
+		doinkerControl();
 		pros::delay(20); // Run for 20 ms then update
 	}
 }

@@ -1,9 +1,15 @@
 #include "api.h"
+#include "pros/rtos.hpp"
+#include "robodash/views/selector.hpp"
+#include "systems/classes.hpp"
 #include "systems/drive.hpp"
+#include "robodash/api.h"
 #include "systems/mogo.hpp"
 #include "systems/intake.hpp"
 #include "autos.hpp"
 #include "systems/controlscheme.hpp"
+
+
 
 /**
 * @brief Move the robot a relative distance forwards or backwards
@@ -27,33 +33,56 @@ void moveRelative(float distance, float maxSpeed, int timeout) {
     }
 };
 
-void soloAWP() {
+
+void ringSideBlue() {
     float startTime = pros::millis();
-    chassis.setPose(52,-28,90);
-    chassis.moveToPoint(29, -24, 2500, {.forwards=false, .maxSpeed=75});
+    chassis.setPose(52,28,90);
+    chassis.moveToPoint(28, 24, 2500, {.forwards=false, .maxSpeed=75});
     chassis.waitUntilDone();
     MogoMech.clamp();
     Intake.In();
-    chassis.moveToPoint(24, -46, 2000, {.maxSpeed=127});
+    chassis.moveToPoint(29, 52, 1500, {.maxSpeed=600});
     chassis.waitUntilDone();
-    chassis.moveToPose(60, -58, 135, 4000, {.horizontalDrift=12, .maxSpeed=127});
-    Intake.In();
-    // moveRelative(5, 75, 750);
-    chassis.waitUntilDone();
-    moveRelative(-5, 127, 750);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(25, -5, 750);
-    chassis.waitUntilDone();
-    chassis.moveToPose(60, -58, 135, 2000, {.horizontalDrift=12, .maxSpeed=127});
-    chassis.waitUntilDone();
-    moveRelative(-5, 127, 750);
-    chassis.waitUntilDone();
-    chassis.moveToPoint(25, -5, 2500);
-    Intake.Stop();
+    chassis.moveToPoint(10, 52, 1000);
     chassis.waitUntilDone();
     float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
     master.print(0,0,"%f", totalTime);
+}
 
+void soloAwpBlue() {
+    float startTime = pros::millis();
+    chassis.setPose(52, -60, 90);
+    // chassis.moveToPoint(24, -60, 1000, {.forwards=false, .earlyExitRange=6});
+    // chassis.waitUntilDone();
+    chassis.moveToPose(8, -52, 120, 5000, {.forwards=false, .horizontalDrift=10});
+    chassis.waitUntilDone();
+    MogoMech.clamp();
+    Intake.In();
+    chassis.moveToPoint(18, -49, 1250, {.minSpeed=50});
+    chassis.waitUntilDone();
+    pros::delay(750);
+    MogoMech.release();
+    chassis.waitUntilDone();
+    chassis.moveToPoint(24, -30, 2000, {.forwards=false});
+    chassis.waitUntilDone();
+    MogoMech.clamp();
+    chassis.moveToPoint(58, -24, 750, {.forwards=false});
+    chassis.waitUntilDone();
+    chassis.turnToPoint(64, -60, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(64, -60, 4000, {.maxSpeed=75});
+    chassis.waitUntilDone();
+    moveRelative(-6, 127, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(25, -5, 2500);
+    chassis.waitUntil(2);
+    Intake.Out();
+    chassis.waitUntilDone();
+    Intake.Stop();
+    float endTime = pros::millis();
+    float totalTime = endTime - startTime;
+    std::cout << totalTime << std::endl;
+    master.print(0,0,"%f", totalTime);
 }
