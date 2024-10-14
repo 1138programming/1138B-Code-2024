@@ -2,6 +2,7 @@
 #include "pros/motors.h"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
+#include "systems/arm.hpp"
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
 
@@ -35,8 +36,8 @@ rd::Selector mySelector({
 void initialize() {
 	//pros::lcd::initialize();
 	chassis.calibrate();
-	Intake.setFloatingSpeed(600);
-	Intake.setFlipperSpeed(600);
+	Intake.setSpeed(600);
+	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
 	//pros::lcd::set_text(1, "Hello PROS User!");
 	//pros::lcd::register_btn1_cb(on_center_button);
 	mySelector.focus();
@@ -98,6 +99,7 @@ void opcontrol() {
 		intakeControl();
 		mogoControl();
 		doinkerControl();
+		armControl();
 		pros::delay(20); // Run for 20 ms then update
 	}
 }

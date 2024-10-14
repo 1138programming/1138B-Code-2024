@@ -3,9 +3,10 @@
 #include "pros/abstract_motor.hpp"
 
 // motors
-inline pros::Motor armMotor(20, pros::MotorGearset::blue, pros::v5::MotorEncoderUnits::degrees);
+inline pros::Motor armMotor1(-11, pros::MotorGearset::green, pros::v5::MotorEncoderUnits::degrees);
+inline pros::Motor armMotor2(12, pros::MotorGearset::green, pros::v5::MotorEncoderUnits::degrees);
 
 //PID
-inline lemlib::PID armPID(1,1,1);
+inline lemlib::PID armPID(3,0,0);
 //class definition
-inline Arm arm(armMotor, armPID, 0, 0, 0, 0, (12.0/60.0));
+inline Arm arm(armMotor1, armMotor2, armPID, 0, 30, 112, 140, (12.0/60.0));

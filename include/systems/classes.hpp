@@ -1,6 +1,7 @@
 #pragma once
 #include "api.h"
 #include "lemlib/pid.hpp"
+#include "pros/motors.h"
 
 // class definitions
 class Intake {
@@ -57,14 +58,16 @@ class Arm {
             SCORE
         };
         States state;
-        pros::Motor armMotor;
+        pros::Motor armMotor1;
+        pros::Motor armMotor2;
         float gearRatio;
 
     public:
-        Arm(pros::Motor armMotor, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
+        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
         void toggleReady();
         void scoreButton();
         void updateState();
+        void setBrakeMode(pros::motor_brake_mode_e brakeMode);
         void setState(States newState);
         States getState();
     

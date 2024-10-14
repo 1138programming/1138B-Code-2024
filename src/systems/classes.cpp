@@ -58,8 +58,13 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio)
-    : armMotor(armMotor), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scoreReadyPos(scoreReadyPos), scorePos(scorePos), gearRatio(gearRatio), state(STOW) {}
+Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio)
+    : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scoreReadyPos(scoreReadyPos), scorePos(scorePos), gearRatio(gearRatio), state(STOW) {}
+
+void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
+    armMotor1.set_brake_mode(brakeMode);
+    armMotor2.set_brake_mode(brakeMode);
+}
 
 void Arm::toggleReady() {
     if (state == STOW) {
@@ -97,7 +102,8 @@ void Arm::updateState() {
             setPosition = scorePos;
             break;
     };
-    currentPosition = (armMotor.get_position() * gearRatio);
+    currentPosition = (armMotor1.get_position() * gearRatio);
     error = setPosition - currentPosition;
-    armMotor.move(armPID.update(error));
+    armMotor1.move(armPID.update(error));
+    armMotor2.move(armPID.update(error));
 }

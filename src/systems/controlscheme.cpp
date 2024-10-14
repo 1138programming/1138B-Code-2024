@@ -5,6 +5,7 @@
 #include "systems/intake.hpp"
 #include "systems/mogo.hpp"
 #include "systems/doinker.hpp"
+#include "systems/arm.hpp"
 
 // DT Controls
 void driveControl() {
@@ -32,10 +33,20 @@ void mogoControl() {
 
 // Doinker Control
 void doinkerControl() {
-    if (master.get_digital(DIGITAL_Y)) {
+    if (master.get_digital(DIGITAL_L1)) {
         stackDoinker.down();
     }
     else {
         stackDoinker.up();
+    };
+}
+
+void armControl() {
+    arm.updateState();
+    if (master.get_digital_new_press(DIGITAL_Y)) {
+        arm.toggleReady();
+    }
+    else if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+        arm.scoreButton();
     };
 }

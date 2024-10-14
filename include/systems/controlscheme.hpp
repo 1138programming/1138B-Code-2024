@@ -8,3 +8,4 @@ void driveControl();
 void intakeControl();
 void mogoControl();
 void doinkerControl();
+void armControl();
