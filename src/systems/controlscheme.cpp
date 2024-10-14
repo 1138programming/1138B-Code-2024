@@ -6,7 +6,6 @@
 #include "systems/mogo.hpp"
 #include "systems/doinker.hpp"
 
-bool lastFire = false;
 // DT Controls
 void driveControl() {
     chassis.arcade(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_X));

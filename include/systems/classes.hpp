@@ -1,22 +1,20 @@
 #pragma once
 #include "api.h"
+#include "lemlib/pid.hpp"
 
 // class definitions
 class Intake {
 
     public:
-        Intake(pros::Motor floating, pros::Motor flipper); // allow for 2 seperate motors, as we have two
+        Intake(pros::Motor intakeMotor);
         void In();
         void Out();
         void Stop();
-        void setFloatingSpeed(int speed); // set the speed for the floating stage
-        void setFlipperSpeed(int speed); // set the speed for the upper stage that scores the rings
+        void setSpeed(int speed); // set the speed for the intake
 
     private:
-        pros::Motor floating;
-        pros::Motor flipper;
-        int floatingSpeed;
-        int flipperSpeed;
+        pros::Motor intakeMotor;
+        int intakeSpeed;
         
 };
 
@@ -40,4 +38,34 @@ class Doinker {
 
     private:
         pros::adi::Pneumatics doinkPiston;
+};
+
+class Arm {
+    private:
+        float setPosition;
+        float currentPosition;
+        float error;
+        lemlib::PID armPID;
+        float stowPos;
+        float readyPos;
+        float scoreReadyPos;
+        float scorePos;
+        enum States {
+            STOW,
+            READY,
+            SCOREREADY,
+            SCORE
+        };
+        States state;
+        pros::Motor armMotor;
+        float gearRatio;
+
+    public:
+        Arm(pros::Motor armMotor, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
+        void toggleReady();
+        void scoreButton();
+        void updateState();
+        void setState(States newState);
+        States getState();
+    
 };
