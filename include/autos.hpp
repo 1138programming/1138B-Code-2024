@@ -3,3 +3,4 @@
 
 void ringSideBlue();
 void soloAwpBlue();
+void soloAwpRed();

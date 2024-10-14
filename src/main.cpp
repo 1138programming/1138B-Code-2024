@@ -7,7 +7,8 @@
 
 rd::Selector mySelector({
     {"Blue Ring Side", &ringSideBlue},
-	{"Blue Solo AWP", &soloAwpBlue}
+	{"Blue Solo AWP", &soloAwpBlue},
+	{"Red Solo AWP", &soloAwpRed}
 });
 
 /**
