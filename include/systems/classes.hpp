@@ -67,6 +67,9 @@ class Arm {
         void toggleReady();
         void scoreButton();
         void updateState();
+        void lowerPos();
+        void raisePos();
+        int posOffset;
         void setBrakeMode(pros::motor_brake_mode_e brakeMode);
         void setState(States newState);
         States getState();

@@ -4,8 +4,8 @@
 
 // motors
 
-inline pros::MotorGroup left_motors({-16, -14, 15}, pros::MotorGearset::blue);
-inline pros::MotorGroup right_motors({10, 19, -20}, pros::MotorGearset::blue);
+inline pros::MotorGroup left_motors({8, -9, -10}, pros::MotorGearset::blue);
+inline pros::MotorGroup right_motors({-6, 4, 3}, pros::MotorGearset::blue);
 
 // sensors
 

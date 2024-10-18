@@ -49,4 +49,11 @@ void armControl() {
     else if (master.get_digital_new_press(DIGITAL_RIGHT)) {
         arm.scoreButton();
     };
+
+    if (master.get_digital(DIGITAL_UP)) {
+        arm.raisePos();
+    }
+    else if (master.get_digital(DIGITAL_DOWN)) {
+        arm.lowerPos();
+    };
 }

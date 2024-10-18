@@ -2,6 +2,6 @@
 #include "systems/classes.hpp"
 
 
-inline pros::adi::Pneumatics doinker(1, false);
+inline pros::adi::Pneumatics doinker(2, false);
 
 inline Doinker stackDoinker(doinker);
