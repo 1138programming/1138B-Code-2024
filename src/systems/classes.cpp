@@ -1,4 +1,7 @@
 #include "systems/classes.hpp"
+#include "pros/rtos.hpp"
+#include "systems/controlscheme.hpp"
+#include "systems/intake.hpp"
 
 
 //intake
@@ -85,7 +88,14 @@ void Arm::toggleReady() {
 
 void Arm::scoreButton() {
     if (state == READY) {
-        state = SCOREREADY;
+        Intake.In();
+        pros::delay(100);
+        Intake.Stop();
+        pros::delay(50);
+        Intake.In();
+        pros::delay(100);
+        Intake.Stop();
+        state = SCORE;
     }
     else if (state == SCOREREADY) {
         state = SCORE;
@@ -112,6 +122,7 @@ void Arm::updateState() {
     };
     currentPosition = (armMotor1.get_position() * gearRatio);
     error = (setPosition + posOffset) - currentPosition;
+    master.print(0, 0, "%i ", posOffset);
     armMotor1.move(armPID.update(error));
     armMotor2.move(armPID.update(error));
 }

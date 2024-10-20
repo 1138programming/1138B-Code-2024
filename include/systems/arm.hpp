@@ -9,4 +9,4 @@ inline pros::Motor armMotor2(12, pros::MotorGearset::green, pros::v5::MotorEncod
 //PID
 inline lemlib::PID armPID(3,0,0);
 //class definition
-inline Arm arm(armMotor1, armMotor2, armPID, 0, 23, 112, 145, (12.0/60.0));
+inline Arm arm(armMotor1, armMotor2, armPID, 0, 34, 112, 145, (12.0/60.0));
