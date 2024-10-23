@@ -29,6 +29,7 @@ void mogoControl() {
     if (master.get_digital_new_press(DIGITAL_L2)) {
         MogoMech.toggle();
     }
+    Intake.colorSort();
 }
 
 // Doinker Control

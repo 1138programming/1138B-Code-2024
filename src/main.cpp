@@ -34,13 +34,14 @@ rd::Selector mySelector({
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	//pros::lcd::initialize();
+	pros::lcd::initialize();
 	chassis.calibrate();
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
+	Intake.setSortColor(pros::Color::red);
 	//pros::lcd::set_text(1, "Hello PROS User!");
 	//pros::lcd::register_btn1_cb(on_center_button);
-	mySelector.focus();
+	//mySelector.focus();
 }
 
 /**
@@ -91,15 +92,13 @@ void autonomous() {
 void opcontrol() {
 	
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0); // Prints status of the emulated screen LCDs
 						 
 		driveControl();
 		intakeControl();
 		mogoControl();
 		doinkerControl();
 		armControl();
+		pros::lcd::print(0, "%d", (int)Intake.currentRingColor);
 		pros::delay(20); // Run for 20 ms then update
 	}
 }

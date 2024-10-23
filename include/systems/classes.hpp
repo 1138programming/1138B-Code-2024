@@ -1,21 +1,29 @@
 #pragma once
 #include "api.h"
 #include "lemlib/pid.hpp"
+#include "pros/colors.hpp"
 #include "pros/motors.h"
+#include "pros/optical.hpp"
 
 // class definitions
 class Intake {
 
     public:
-        Intake(pros::Motor intakeMotor);
+        Intake(pros::Motor intakeMotor, pros::Optical ringColorSensor);
         void In();
         void Out();
         void Stop();
         void setSpeed(int speed); // set the speed for the intake
+        void setSortColor(pros::Color setColor);
+        void colorSort();
+        pros::Color currentRingColor;
 
     private:
+        pros::Optical ringColorSensor;
         pros::Motor intakeMotor;
+        pros::Color setColor;
         int intakeSpeed;
+        bool sortNeeded;
         
 };
 
