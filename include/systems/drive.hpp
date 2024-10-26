@@ -9,7 +9,7 @@ inline pros::MotorGroup right_motors({-6, 4, 3}, pros::MotorGearset::blue);
 
 // sensors
 
-inline pros::IMU imu(12);
+inline pros::IMU imu(13);
 // inline pros::Rotation vertTracking(2);
 // inline pros::Rotation horzTracking(3);
 
@@ -17,8 +17,8 @@ inline pros::IMU imu(12);
 // LEMLIB
 
 inline double trackWidth = 11.5;
-inline int WheelSize = lemlib::Omniwheel::NEW_325;
-inline int DriveRPM = 400;
+inline int WheelSize = lemlib::Omniwheel::NEW_275;
+inline int DriveRPM = 450;
 inline int HorzDrift = 8;
 
 // drivetrain settings

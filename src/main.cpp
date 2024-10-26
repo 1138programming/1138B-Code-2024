@@ -41,7 +41,7 @@ void initialize() {
 	Intake.setSortColor(pros::Color::red);
 	//pros::lcd::set_text(1, "Hello PROS User!");
 	//pros::lcd::register_btn1_cb(on_center_button);
-	//mySelector.focus();
+	mySelector.focus();
 }
 
 /**
@@ -74,7 +74,8 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	mySelector.run_auton();
+	//mySelector.run_auton();
+	soloAwpBlue();
 }
 /**
  * Runs the operator control code. This function will be started in its own task

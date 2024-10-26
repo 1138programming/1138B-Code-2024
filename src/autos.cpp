@@ -53,10 +53,11 @@ void ringSideBlue() {
 
 void soloAwpBlue() {
     float startTime = pros::millis();
-    chassis.setPose(52, -60, 90);
+    chassis.setPose(55, -56, 90);
     // chassis.moveToPoint(24, -60, 1000, {.forwards=false, .earlyExitRange=6});
     // chassis.waitUntilDone();
-    chassis.moveToPose(8, -52, 120, 5000, {.forwards=false, .horizontalDrift=10});
+    chassis.moveToPose(0, -48, 120, 5000, {.forwards=false, .horizontalDrift=10});
+    /*
     chassis.waitUntilDone();
     MogoMech.clamp();
     Intake.In();
@@ -81,8 +82,10 @@ void soloAwpBlue() {
     Intake.Out();
     chassis.waitUntilDone();
     Intake.Stop();
+    */
     float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
     master.print(0,0,"%f", totalTime);
+
 }

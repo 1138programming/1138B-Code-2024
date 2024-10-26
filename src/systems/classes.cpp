@@ -17,12 +17,12 @@ void Intake::Out() {
 
 void Intake::In() {
     intakeMotor.move_velocity(intakeSpeed);
-    if (sortNeeded) {
-        sortNeeded = false;
-        pros::delay(60);
-        Intake::Out();
-        pros::delay(100);
-    }
+    // if (sortNeeded) {
+    //     sortNeeded = false;
+    //     pros::delay(60);
+    //     Intake::Out();
+    //     pros::delay(100);
+    // }
 }
 
 void Intake::Stop() {
@@ -34,24 +34,24 @@ void Intake::setSortColor(pros::Color setColor_) {
 }
 
 void Intake::colorSort() {
-    pros::Color oldColor = pros::Color::green;
-    if ((ringColorSensor.get_hue() > 200 && ringColorSensor.get_hue() < 230) && ringColorSensor.get_proximity() > 25) {
-        currentRingColor = pros::Color::blue;
-    }
-    else if ((ringColorSensor.get_hue() > 350 || ringColorSensor.get_hue() < 20) && ringColorSensor.get_proximity() > 50) {
-        currentRingColor = pros::Color::red;
-    }
-    else {
-        currentRingColor = pros::Color::green;
-    };
-    if (currentRingColor != setColor && oldColor != currentRingColor) {
-        sortNeeded = true;
-        oldColor = currentRingColor;
-    }
-    else {
-        sortNeeded = false;
-    }
-    oldColor = currentRingColor;
+    // pros::Color oldColor = pros::Color::green;
+    // if ((ringColorSensor.get_hue() > 200 && ringColorSensor.get_hue() < 230) && ringColorSensor.get_proximity() > 25) {
+    //     currentRingColor = pros::Color::blue;
+    // }
+    // else if ((ringColorSensor.get_hue() > 350 || ringColorSensor.get_hue() < 20) && ringColorSensor.get_proximity() > 50) {
+    //     currentRingColor = pros::Color::red;
+    // }
+    // else {
+    //     currentRingColor = pros::Color::green;
+    // };
+    // if (currentRingColor != setColor && oldColor != currentRingColor) {
+    //     sortNeeded = true;
+    //     oldColor = currentRingColor;
+    // }
+    // else {
+    //     sortNeeded = false;
+    // }
+    // oldColor = currentRingColor;
 }
 void Intake::setSpeed(int speed) {
     Intake::intakeSpeed = speed;
