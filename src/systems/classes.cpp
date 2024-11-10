@@ -119,13 +119,13 @@ void Arm::toggleReady() {
 
 void Arm::scoreButton() {
     if (state == READY) {
-        Intake.In();
-        pros::delay(100);
-        Intake.Stop();
-        pros::delay(50);
-        Intake.In();
-        pros::delay(100);
-        Intake.Stop();
+        // Intake.In();
+        // pros::delay(100);
+        // Intake.Stop();
+        // pros::delay(50);
+        // Intake.In();
+        // pros::delay(100);
+        // Intake.Stop();
         state = SCORE;
     }
     else if (state == SCOREREADY) {

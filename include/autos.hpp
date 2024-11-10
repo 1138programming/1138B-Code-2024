@@ -3,3 +3,5 @@
 
 void ringSideBlue();
 void soloAwpBlue();
+void goalSideBlue();
+void goalSideRed();

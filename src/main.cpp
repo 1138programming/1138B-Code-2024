@@ -7,8 +7,8 @@
 #include "autos.hpp"
 
 rd::Selector mySelector({
-    {"Blue Ring Side", &ringSideBlue},
-	{"Blue Solo AWP", &soloAwpBlue}
+    {"Blue Goal Side", &goalSideBlue},
+	{"Red Goal Side", &goalSideRed}
 });
 
 /**
@@ -34,7 +34,7 @@ rd::Selector mySelector({
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
+	//pros::lcd::initialize();
 	chassis.calibrate();
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
@@ -74,8 +74,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	//mySelector.run_auton();
-	soloAwpBlue();
+	mySelector.run_auton();
 }
 /**
  * Runs the operator control code. This function will be started in its own task

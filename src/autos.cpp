@@ -8,6 +8,7 @@
 #include "systems/intake.hpp"
 #include "autos.hpp"
 #include "systems/controlscheme.hpp"
+#include "systems/doinker.hpp"
 
 
 
@@ -33,6 +34,11 @@ void moveRelative(float distance, float maxSpeed, int timeout) {
     }
 };
 
+void relativeOdom(float xChange, float yChange, float maxSpeed, int timeout) {
+    float currentX = chassis.getPose().x;
+    float currentY = chassis.getPose().y;
+    chassis.moveToPoint((currentX+xChange), (currentY+yChange), timeout);
+}
 
 void ringSideBlue() {
     float startTime = pros::millis();
@@ -49,6 +55,54 @@ void ringSideBlue() {
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
     master.print(0,0,"%f", totalTime);
+}
+
+void goalSideBlue() {
+    float startTime = pros::millis();
+    ringColor.set_led_pwm(100);
+    chassis.setPose(52,-24, 90);
+    moveRelative(-24, 450, 1500);
+    chassis.waitUntilDone();
+    MogoMech.clamp();
+    Intake.In();
+    chassis.turnToPoint(24, -52, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(24, -46, 1000);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    moveRelative(-6, 600, 750);
+    chassis.waitUntilDone();
+    Intake.Stop();
+    chassis.moveToPoint(28, -6, 1500);
+    chassis.waitUntilDone();
+}
+
+void goalSideRed() {
+    float startTime = pros::millis();
+    ringColor.set_led_pwm(100);
+    chassis.setPose(-52,-24, 270);
+    moveRelative(-24, 450, 1500);
+    chassis.waitUntilDone();
+    MogoMech.clamp();
+    Intake.In();
+    chassis.turnToPoint(-24, -52, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-24, -46, 1000);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    moveRelative(-6, 600, 750);
+    chassis.waitUntilDone();
+    Intake.Stop();
+    chassis.moveToPoint(-28, -6, 1500);
+    chassis.waitUntilDone();
 }
 
 void soloAwpBlue() {
