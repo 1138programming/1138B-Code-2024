@@ -40,17 +40,37 @@ void relativeOdom(float xChange, float yChange, float maxSpeed, int timeout) {
     chassis.moveToPoint((currentX+xChange), (currentY+yChange), timeout);
 }
 
-void ringSideBlue() {
+void driveBack() {
+    moveRelative(-8, 600, 1000);
+    chassis.waitUntilDone();
+}
+
+void ringSideRed() {
     float startTime = pros::millis();
-    chassis.setPose(52,28,90);
-    chassis.moveToPoint(28, 24, 2500, {.forwards=false, .maxSpeed=75});
+    chassis.setPose(-52,24,270);
+    moveRelative(-24, 450, 1500);
     chassis.waitUntilDone();
     MogoMech.clamp();
     Intake.In();
-    chassis.moveToPoint(29, 52, 1500, {.maxSpeed=600});
+    chassis.moveToPoint(-28, 6, 1500);
     chassis.waitUntilDone();
-    chassis.moveToPoint(10, 52, 1000);
+    Intake.Stop();
+    float endTime = pros::millis();
+    float totalTime = endTime - startTime;
+    std::cout << totalTime << std::endl;
+    master.print(0,0,"%f", totalTime);
+}
+
+void ringSideBlue() {
+    float startTime = pros::millis();
+    chassis.setPose(52,24,90);
+    moveRelative(-24, 450, 1500);
     chassis.waitUntilDone();
+    MogoMech.clamp();
+    Intake.In();
+    chassis.moveToPoint(28, 6, 1500);
+    chassis.waitUntilDone();
+    Intake.Stop();
     float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;

@@ -8,7 +8,11 @@
 
 rd::Selector mySelector({
     {"Blue Goal Side", &goalSideBlue},
-	{"Red Goal Side", &goalSideRed}
+	{"Blue Ring Side", &ringSideBlue},
+	{"Red Goal Side", &goalSideRed},
+	{"Red Ring Side", &ringSideRed},
+	{"Drive Backwards", &driveBack}
+
 });
 
 /**
