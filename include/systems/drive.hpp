@@ -3,26 +3,19 @@
 #include "lemlib/api.hpp"
 
 // motors
-
-inline pros::MotorGroup left_motors({-7, -19, 20}, pros::MotorGearset::blue);
-inline pros::MotorGroup right_motors({6, -11, 12}, pros::MotorGearset::blue);
+inline pros::MotorGroup left_motors({-7, -19, 20}, pros::MotorGearset::blue); // left drive motor group
+inline pros::MotorGroup right_motors({6, -11, 12}, pros::MotorGearset::blue); // right drive motor group
 
 // sensors
+inline pros::IMU imu(20); // define our imu
 
-inline pros::IMU imu(20);
-inline pros::Rotation vertTracking(21);
-inline pros::Rotation horzTracking(11);
+// LemLib
+inline int trackWidth = 10; // distance between our left and right wheels
+inline int WheelSize = lemlib::Omniwheel::NEW_325; // drivetrain wheel size
+inline int DriveRPM = 400; // drivetrain RPM
+inline int HorzDrift = 12; // the maximum lateral speed before we drift sideways
 
-
-// LEMLIB
-
-inline int trackWidth = 10;
-inline int WheelSize = lemlib::Omniwheel::NEW_325;
-inline int DriveRPM = 400;
-inline int HorzDrift = 2;
-
-// drivetrain settings
-
+// drivetrain definition
 inline lemlib::Drivetrain drivetrain(
     &left_motors, // left motor group
     &right_motors, // right motor group
@@ -32,31 +25,11 @@ inline lemlib::Drivetrain drivetrain(
     HorzDrift // set the HorzDrift variable to our horizontal drift tracking in LemLib
 );
 
-// tracking wheels
-
-//vertical tracking
-
-inline int horzOffset = 0; // set the offset for the vertical wheel (+ = Right, - = Left)
-inline lemlib::TrackingWheel vertTrackingWheel(
-    &vertTracking, // set the tracking wheel to use the rotation sensor on the vertical wheel
-    lemlib::Omniwheel::NEW_2, // set the tracking wheel to use the new 2" omni wheels
-    horzOffset // set the offset for the tracking wheel
-);
-
-// horizontal tracking
-
-inline int vertOffset = 0; // set the offset for the horizontal wheel (+ = Right, - = Left)
-inline lemlib::TrackingWheel horzTrackingWheel(
-    &horzTracking, // set the tracking wheel to use the rotation sensor on the horizontal wheel
-    lemlib::Omniwheel::NEW_2, // set the tracking wheel to use the new 2" omni wheels
-    vertOffset // set the offset for the tracking wheel
-);
 
 // odom settings
-
-inline lemlib::OdomSensors OdomSensors(&vertTrackingWheel, // vertical tracking wheel 1, set to null
+inline lemlib::OdomSensors OdomSensors(nullptr, // vertical tracking wheel 1, set to nullptr as we are using IMEs
                             nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                            &horzTrackingWheel, // horizontal tracking wheel 1
+                            nullptr, // horizontal tracking wheel 1, set to nullptr as we are using IMEs
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
