@@ -1,4 +1,5 @@
 #include "api.h"
+#include "lemlib/chassis/chassis.hpp"
 #include "pros/rtos.hpp"
 #include "robodash/views/selector.hpp"
 #include "systems/classes.hpp"
@@ -9,6 +10,7 @@
 #include "autos.hpp"
 #include "systems/controlscheme.hpp"
 #include "systems/doinker.hpp"
+#include "systems/arm.hpp"
 
 
 
@@ -52,7 +54,28 @@ void ringSideRed() {
     chassis.waitUntilDone();
     MogoMech.clamp();
     Intake.In();
-    chassis.moveToPoint(-28, 6, 1500);
+    chassis.turnToPoint(-26, 42, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-26, 42, 1500);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    chassis.moveToPoint(-18, 40, 1500);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    moveRelative(-32, 600, 1250);
+    chassis.waitUntilDone();
+    Intake.Out();
+    chassis.turnToPoint(-54, -54, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-54, -54, 1500);
     chassis.waitUntilDone();
     Intake.Stop();
     float endTime = pros::millis();
@@ -68,7 +91,27 @@ void ringSideBlue() {
     chassis.waitUntilDone();
     MogoMech.clamp();
     Intake.In();
-    chassis.moveToPoint(28, 6, 1500);
+    chassis.turnToPoint(26, 42, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(26, 42, 1500);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    chassis.moveToPoint(18, 40, 1250);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    moveRelative(-32, 600, 1250);
+    chassis.waitUntilDone();
+    chassis.turnToPoint(50, -50, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(50, -50, 1500);
     chassis.waitUntilDone();
     Intake.Stop();
     float endTime = pros::millis();
@@ -123,6 +166,68 @@ void goalSideRed() {
     Intake.Stop();
     chassis.moveToPoint(-28, -6, 1500);
     chassis.waitUntilDone();
+}
+
+void goalSideAWPRed() {
+    float startTime = pros::millis();
+    ringColor.set_led_pwm(100);
+    chassis.setPose(-52,-24, 270);
+    moveRelative(-20, 450, 1500);
+    chassis.waitUntilDone();
+    MogoMech.clamp();
+    Intake.In();
+    chassis.turnToPoint(-24, -46, 750);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-24, -46, 1000);
+    chassis.waitUntilDone();
+    while (ringColor.get_proximity() > 25) {
+        pros::delay(1);
+        master.print(1, 1, "waiting");
+    }
+    master.print(1, 1, "wait done");
+    // moveRelative(-6, 600, 750);
+    // chassis.waitUntilDone();
+    chassis.moveToPoint(-55, -32, 1250, {.forwards=false});
+    chassis.waitUntilDone();
+    Intake.Stop();
+    MogoMech.release();
+    chassis.moveToPose(-44, 4, 0, 1750, {.horizontalDrift=18});
+    Intake.In();
+    chassis.waitUntilDone();
+    Intake.Stop();
+    Intake.setSpeed(200);
+    Intake.In();
+    while (ringColor.get_proximity() > 25 && !(Intake.currentRingColor == pros::Color::red)) {
+        pros::delay(1);
+        master.print(1, 0, "waiting");
+    }
+    master.print(1, 0, "wait done");
+    Intake.Stop();
+    chassis.turnToHeading(90, 1750, {.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
+    chassis.waitUntilDone();
+    moveRelative(-18, 600, 1250);
+    chassis.waitUntilDone();
+    moveRelative(2, 600, 1250);
+    chassis.waitUntilDone();
+    // chassis.moveToPoint(-60, -14, 1250, {.forwards=false});
+    // chassis.waitUntilDone();
+    // chassis.turnToHeading(90, 750);
+    // chassis.waitUntilDone();
+    // moveRelative(2, 600, 1500);
+    // chassis.waitUntilDone();
+    Intake.setSpeed(600);
+    Intake.In();
+    pros::delay(1500);
+    Intake.Stop();
+    chassis.moveToPoint(-32, 0, 1000);
+    chassis.waitUntilDone();
+    arm.setState(Arm::SCOREREADY);
+    // chassis.moveToPoint(-28, -6, 1500);
+    // chassis.waitUntilDone();
+    float endTime = pros::millis();
+    float totalTime = endTime - startTime;
+    std::cout << totalTime << std::endl;
+    master.print(0,0,"%f", totalTime);
 }
 
 void soloAwpBlue() {

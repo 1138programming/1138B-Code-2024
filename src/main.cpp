@@ -78,7 +78,8 @@ void competition_initialize() {}
  */
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	mySelector.run_auton();
+	goalSideAWPRed();
+	//mySelector.run_auton();
 }
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -94,7 +95,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	
+	arm.setState(Arm::STOW);
 	while (true) {
 						 
 		driveControl();

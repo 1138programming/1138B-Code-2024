@@ -6,4 +6,5 @@ void ringSideRed();
 void soloAwpBlue();
 void goalSideBlue();
 void goalSideRed();
+void goalSideAWPRed();
 void driveBack();

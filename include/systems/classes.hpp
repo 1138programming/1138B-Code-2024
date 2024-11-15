@@ -59,6 +59,12 @@ class Arm {
         float readyPos;
         float scoreReadyPos;
         float scorePos;
+        pros::Motor armMotor1;
+        pros::Motor armMotor2;
+        float gearRatio;
+
+    public:
+        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
         enum States {
             STOW,
             READY,
@@ -66,12 +72,7 @@ class Arm {
             SCORE
         };
         States state;
-        pros::Motor armMotor1;
-        pros::Motor armMotor2;
-        float gearRatio;
-
-    public:
-        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
+        States getState();
         void toggleReady();
         void scoreButton();
         void updateState();
@@ -80,6 +81,5 @@ class Arm {
         int posOffset;
         void setBrakeMode(pros::motor_brake_mode_e brakeMode);
         void setState(States newState);
-        States getState();
     
 };

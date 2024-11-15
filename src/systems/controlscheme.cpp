@@ -22,6 +22,7 @@ void intakeControl() {
     else {
         Intake.Stop();
     };
+    Intake.colorSort();
 }
 
 // Mogo Control
