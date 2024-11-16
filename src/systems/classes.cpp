@@ -33,7 +33,7 @@ void Intake::setSortColor(pros::Color setColor_) {
     setColor = setColor_;
 }
 
-void Intake::colorSort() {
+void Intake::colorSort(void* param) {
     pros::Color oldColor = pros::Color::green;
     if ((ringColorSensor.get_hue() > 200 && ringColorSensor.get_hue() < 230) && ringColorSensor.get_proximity() > 25) {
         currentRingColor = pros::Color::blue;
@@ -126,7 +126,7 @@ void Arm::scoreButton() {
         // Intake.In();
         // pros::delay(100);
         // Intake.Stop();
-        state = SCORE;
+        state = SCOREREADY;
     }
     else if (state == SCOREREADY) {
         state = SCORE;

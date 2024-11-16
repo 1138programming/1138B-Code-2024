@@ -22,7 +22,7 @@ void intakeControl() {
     else {
         Intake.Stop();
     };
-    Intake.colorSort();
+    Intake.colorSort(NULL);
 }
 
 // Mogo Control
@@ -30,7 +30,7 @@ void mogoControl() {
     if (master.get_digital_new_press(DIGITAL_L2)) {
         MogoMech.toggle();
     }
-    Intake.colorSort();
+    Intake.colorSort(NULL);
 }
 
 // Doinker Control

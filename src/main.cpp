@@ -5,10 +5,13 @@
 #include "systems/arm.hpp"
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
+#include <cstddef>
 
 rd::Selector mySelector({
+	{"Blue Goal AWP", &goalSideAWPBlue},
     {"Blue Goal Side", &goalSideBlue},
 	{"Blue Ring Side", &ringSideBlue},
+	{"Red Goal AWP", &goalSideAWPRed},
 	{"Red Goal Side", &goalSideRed},
 	{"Red Ring Side", &ringSideRed},
 	{"Drive Backwards", &driveBack}
@@ -76,10 +79,10 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
+
 void autonomous() {
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	goalSideAWPRed();
-	//mySelector.run_auton();
+	mySelector.run_auton();
 }
 /**
  * Runs the operator control code. This function will be started in its own task

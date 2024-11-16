@@ -15,7 +15,7 @@ class Intake {
         void Stop();
         void setSpeed(int speed); // set the speed for the intake
         void setSortColor(pros::Color setColor);
-        void colorSort();
+        void colorSort(void* param);
         pros::Color currentRingColor;
 
     private:
