@@ -32,19 +32,21 @@ void Intake::setFlipperSpeed(int speed) {
 
 
 // mogo
-Mogo::Mogo(pros::adi::Pneumatics clampPiston)
-    : clampPiston(clampPiston) {}
+Mogo::Mogo(pros::adi::Pneumatics clampPiston) // assign constructor input
+    : clampPiston(clampPiston) {}             // to class variable for piston
 
 void Mogo::clamp() {
-    // Increment the state or reset to 0 if it reaches 2
+    // extend the piston to clamp + tilt the mogo
     clampPiston.extend();
 }
 
 void Mogo::release() {
+    // retract the piston to release the mogo
     clampPiston.retract();
 }
 
 void Mogo::toggle() {
+    // toggle the piston (if its clamped, release; if its released, clamp)
     clampPiston.toggle();
 }
 

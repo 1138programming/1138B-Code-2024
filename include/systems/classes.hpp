@@ -22,13 +22,13 @@ class Intake {
 
 class Mogo {
     public:
-        Mogo(pros::adi::Pneumatics clampPiston); // set a constructor for two pistons, as that is what our system requires
-        void clamp();
-        void release();
-        void toggle();
+        Mogo(pros::adi::Pneumatics clampPiston); // set a constructor for one piston
+        void clamp(); // clamp and tilt the mogo
+        void release(); // release the mogo
+        void toggle(); // toggle between clamp + tilt and release
 
     private:
-        pros::adi::Pneumatics clampPiston;
+        pros::adi::Pneumatics clampPiston; // variable for our clamp piston
 };
 
 class Doinker {
