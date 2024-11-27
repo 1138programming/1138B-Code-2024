@@ -48,7 +48,7 @@ inline lemlib::OdomSensors OdomSensors(nullptr, // vertical tracking wheel 1, se
 
 // Lateral PID
 
-inline lemlib::ControllerSettings lateral_controller(6, // proportional gain (kP)
+inline lemlib::ControllerSettings lateral_controller(7, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               3, // derivative gain (kD)
                                               3, // anti windup

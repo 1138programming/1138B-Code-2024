@@ -11,3 +11,4 @@ void ringSideElimsBlue();
 void goalSideAWPRed();
 void goalSideAWPBlue();
 void driveBack();
+void skills();

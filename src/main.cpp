@@ -8,13 +8,14 @@
 #include <cstddef>
 
 rd::Selector mySelector({
-	{"Blue Goal AWP", &goalSideAWPBlue},
+	{"Red Ring Side", &ringSideRed},
+	{"Red Goal Side", &goalSideRed},
+	{"Skills", &skills},
+	{"Blue Goal AWP", &soloAwpBlue},
     {"Blue Goal Side", &goalSideBlue},
 	{"Blue Ring Side", &ringSideBlue},
 	{"Red Goal AWP", &goalSideAWPRed},
-	{"Red Goal Side", &goalSideRed},
-	{"Red Ring Side", &ringSideRed},
-	{"Drive Backwards", &driveBack}
+	{"Drive Backwards", &driveBack},
 
 });
 
