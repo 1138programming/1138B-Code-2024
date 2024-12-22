@@ -9,7 +9,7 @@
 //intake
 
 Intake::Intake(pros::Motor intakeMotor_, pros::Optical ringColorSensor_)
-    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_) {}
+    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_) {ringColorSensor.set_integration_time(10);}
 
 void Intake::Out() {
     intakeMotor.move_velocity(-intakeSpeed);
@@ -17,12 +17,12 @@ void Intake::Out() {
 
 void Intake::In() {
     intakeMotor.move_velocity(intakeSpeed);
-    // if (sortNeeded) {
-    //     sortNeeded = false;
-    //     pros::delay(60);
-    //     Intake::Out();
-    //     pros::delay(100);
-    // }
+    if (sortNeeded) {
+        sortNeeded = false;
+        pros::delay(60);
+        Intake::Out();
+        pros::delay(100);
+    }
 }
 
 void Intake::Stop() {
@@ -33,7 +33,7 @@ void Intake::setSortColor(pros::Color setColor_) {
     setColor = setColor_;
 }
 
-void Intake::colorSort(void* param) {
+void Intake::colorSort() {
     pros::Color oldColor = pros::Color::green;
     if ((ringColorSensor.get_hue() > 200 && ringColorSensor.get_hue() < 230) && ringColorSensor.get_proximity() > 25) {
         currentRingColor = pros::Color::blue;
@@ -92,12 +92,11 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio)
-    : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scoreReadyPos(scoreReadyPos), scorePos(scorePos), gearRatio(gearRatio), state(STOW), posOffset(0) {}
+Arm::Arm(pros::Motor armMotor1, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio)
+    : armMotor1(armMotor1), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scoreReadyPos(scoreReadyPos), scorePos(scorePos), gearRatio(gearRatio), state(STOW), posOffset(0) {}
 
 void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
     armMotor1.set_brake_mode(brakeMode);
-    armMotor2.set_brake_mode(brakeMode);
 }
 
 void Arm::lowerPos() {
@@ -159,5 +158,4 @@ void Arm::updateState() {
     error = (setPosition + posOffset) - currentPosition;
     master.print(0, 0, "%i ", posOffset);
     armMotor1.move(armPID.update(error));
-    armMotor2.move(armPID.update(error));
 }

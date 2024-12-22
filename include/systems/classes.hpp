@@ -15,7 +15,7 @@ class Intake {
         void Stop();
         void setSpeed(int speed); // set the speed for the intake
         void setSortColor(pros::Color setColor);
-        void colorSort(void* param);
+        void colorSort();
         pros::Color currentRingColor;
 
     private:
@@ -60,11 +60,10 @@ class Arm {
         float scoreReadyPos;
         float scorePos;
         pros::Motor armMotor1;
-        pros::Motor armMotor2;
         float gearRatio;
 
     public:
-        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
+        Arm(pros::Motor armMotor1, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio);
         enum States {
             STOW,
             READY,

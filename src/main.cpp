@@ -1,38 +1,24 @@
 #include "main.h"
 #include "pros/motors.h"
+#include "systems/classes.hpp"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/arm.hpp"
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
-#include <cstddef>
+#include "taskmanager/taskmanager.hpp"
+
 
 rd::Selector mySelector({
-	{"Blue Goal AWP", &goalSideAWPBlue},
-    {"Blue Goal Side", &goalSideBlue},
-	{"Blue Ring Side", &ringSideBlue},
-	{"Red Goal AWP", &goalSideAWPRed},
-	{"Red Goal Side", &goalSideRed},
-	{"Red Ring Side", &ringSideRed},
-	{"Drive Backwards", &driveBack}
-
 });
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-// void on_center_button() {
-// 	static bool pressed = false;
-// 	pressed = !pressed;
-// 	if (pressed) {
-// 		pros::lcd::set_text(2, "I was pressed!");
-// 	} else {
-// 		pros::lcd::clear_line(2);
-// 	}
-// }
+TaskWrapper driveControlThread(driveControl, nullptr, "Drive Control");
+TaskWrapper intakeControlThread(intakeControl, nullptr, "Intake Control");
+TaskWrapper mogoControlThread(mogoControl, nullptr, "Mogo Control");
+TaskWrapper armControlThread(armControl, nullptr, "Arm Control");
+
+TaskManager controlsManager;
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -40,12 +26,22 @@ rd::Selector mySelector({
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+void initilizeControls() {
+	controlsManager.addTask(&driveControlThread);
+	controlsManager.addTask(&intakeControlThread);
+	controlsManager.addTask(&mogoControlThread);
+	controlsManager.addTask(&armControlThread);
+	controlsManager.startAllTasks();
+}
+
 void initialize() {
 	//pros::lcd::initialize();
 	chassis.calibrate();
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
 	Intake.setSortColor(pros::Color::red);
+	initilizeControls();
 	//pros::lcd::set_text(1, "Hello PROS User!");
 	//pros::lcd::register_btn1_cb(on_center_button);
 	mySelector.focus();
@@ -100,12 +96,7 @@ void autonomous() {
 void opcontrol() {
 	arm.setState(Arm::STOW);
 	while (true) {
-						 
-		driveControl();
-		intakeControl();
-		mogoControl();
-		doinkerControl();
-		armControl();
+		controlsManager.checkAndRestartTasks();				 
 		pros::lcd::print(0, "%d", (int)Intake.currentRingColor);
 		pros::delay(20); // Run for 20 ms then update
 	}

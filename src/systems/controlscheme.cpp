@@ -1,61 +1,62 @@
 #include "api.h"
 #include "pros/misc.h"
 #include "systems/controlscheme.hpp"
+#include "pros/rtos.hpp"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/mogo.hpp"
-#include "systems/doinker.hpp"
 #include "systems/arm.hpp"
 
 // DT Controls
-void driveControl() {
-    chassis.arcade(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_X));
+void driveControl(void* param) {
+    while(true) {
+        chassis.arcade(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
+        pros::delay(20);
+    }
 }
 
 // Intake Buttons
-void intakeControl() {
-    if (master.get_digital(DIGITAL_R2)) {
-        Intake.In();
-    } else if (master.get_digital(DIGITAL_R1)) {
-        Intake.Out();
+void intakeControl(void* param) {
+    while(true) {
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            Intake.In();
+        } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            Intake.Out();
+        }
+        else {
+            Intake.Stop();
+        };
+        Intake.colorSort();
+        pros::delay(20);
     }
-    else {
-        Intake.Stop();
-    };
-    Intake.colorSort(NULL);
 }
 
 // Mogo Control
-void mogoControl() {
-    if (master.get_digital_new_press(DIGITAL_L2)) {
-        MogoMech.toggle();
+void mogoControl(void* param) {
+    while(true) {
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
+            MogoMech.toggle();
+        }
+        pros::delay(20);
     }
-    Intake.colorSort(NULL);
 }
 
-// Doinker Control
-void doinkerControl() {
-    if (master.get_digital(DIGITAL_L1)) {
-        stackDoinker.down();
-    }
-    else {
-        stackDoinker.up();
-    };
-}
+void armControl(void* param) {
+    while(true) {
+        arm.updateState();
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+            arm.toggleReady();
+        }
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+            arm.scoreButton();
+        };
 
-void armControl() {
-    arm.updateState();
-    if (master.get_digital_new_press(DIGITAL_Y)) {
-        arm.toggleReady();
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+            arm.raisePos();
+        }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            arm.lowerPos();
+        };
+        pros::delay(20);
     }
-    else if (master.get_digital_new_press(DIGITAL_RIGHT)) {
-        arm.scoreButton();
-    };
-
-    if (master.get_digital(DIGITAL_UP)) {
-        arm.raisePos();
-    }
-    else if (master.get_digital(DIGITAL_DOWN)) {
-        arm.lowerPos();
-    };
 }

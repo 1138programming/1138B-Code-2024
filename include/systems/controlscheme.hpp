@@ -2,10 +2,10 @@
 
 // controllers
 
-inline pros::Controller master(CONTROLLER_MASTER);
+inline pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-void driveControl();
-void intakeControl();
-void mogoControl();
-void doinkerControl();
-void armControl();
+void driveControl(void* param);
+void intakeControl(void* param);
+void mogoControl(void* param);
+void doinkerControl(void* param);
+void armControl(void* param);
