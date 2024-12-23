@@ -92,8 +92,8 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor1, lemlib::PID armPID, float stowPos, float readyPos, float scoreReadyPos, float scorePos, float gearRatio)
-    : armMotor1(armMotor1), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scoreReadyPos(scoreReadyPos), scorePos(scorePos), gearRatio(gearRatio), state(STOW), posOffset(0) {}
+Arm::Arm(pros::Motor armMotor1, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
+    : armMotor1(armMotor1), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scorePos(scorePos), allianceScorePos(allianceScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
 
 void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
     armMotor1.set_brake_mode(brakeMode);
@@ -116,6 +116,15 @@ void Arm::toggleReady() {
     }
 }
 
+void Arm::toggleMogoTilt() {
+    if (state == MOGOTILT) {
+        state = MOGOUNTILT;
+    }
+    else {
+        state = MOGOTILT;
+    }
+}
+
 void Arm::scoreButton() {
     if (state == READY) {
         // Intake.In();
@@ -125,9 +134,6 @@ void Arm::scoreButton() {
         // Intake.In();
         // pros::delay(100);
         // Intake.Stop();
-        state = SCORE;
-    }
-    else if (state == SCOREREADY) {
         state = SCORE;
     }
     else {
@@ -147,11 +153,17 @@ void Arm::updateState() {
         case READY:
             setPosition = readyPos;
             break;
-        case SCOREREADY:
-            setPosition = scoreReadyPos;
-            break;
         case SCORE:
             setPosition = scorePos;
+            break;
+        case ALLIANCESCORE:
+            setPosition = allianceScorePos;
+            break;
+        case MOGOTILT:
+            setPosition = mogoTiltPos;
+            break;
+        case MOGOUNTILT:
+            setPosition = mogoUntiltPos;
             break;
     };
     currentPosition = (armMotor1.get_position() * gearRatio);

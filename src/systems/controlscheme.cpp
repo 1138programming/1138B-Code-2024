@@ -1,4 +1,5 @@
 #include "api.h"
+#include "classes.hpp"
 #include "pros/misc.h"
 #include "systems/controlscheme.hpp"
 #include "pros/rtos.hpp"
@@ -43,14 +44,28 @@ void mogoControl(void* param) {
 
 void armControl(void* param) {
     while(true) {
-        arm.updateState();
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            arm.toggleReady();
-        }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-            arm.scoreButton();
-        };
 
+        bool shift = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1); // keep shift state updated
+
+        arm.updateState(); // keep arm position updated to match state
+
+        // right paddle
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !shift) {
+            arm.toggleReady(); // cycle between stow and load positions
+        }
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && shift) {
+            arm.setState(Arm::ALLIANCESCORE); // score on alliance stake
+        }
+
+        // left paddle
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && !shift) {
+            arm.scoreButton(); // cycle between load and score positions
+        }
+        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && shift) {
+            arm.toggleMogoTilt(); // cycle between mogo tilt and untilt positions
+        }
+
+        //manual position offset
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
             arm.raisePos();
         }
