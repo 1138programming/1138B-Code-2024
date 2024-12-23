@@ -125,7 +125,7 @@ void Arm::scoreButton() {
         // Intake.In();
         // pros::delay(100);
         // Intake.Stop();
-        state = SCOREREADY;
+        state = SCORE;
     }
     else if (state == SCOREREADY) {
         state = SCORE;
