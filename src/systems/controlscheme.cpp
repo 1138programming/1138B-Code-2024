@@ -50,28 +50,34 @@ void armControl(void* param) {
         arm.updateState(); // keep arm position updated to match state
 
         // right paddle
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !shift) {
-            arm.toggleReady(); // cycle between stow and load positions
+        if (shift) {
+            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+                arm.setState(Arm::ALLIANCESCORE); // score on alliance stake
+            };
+            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && shift) {
+                arm.toggleMogoTilt(); // cycle between mogo tilt and untilt positions
+            };
         }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && shift) {
-            arm.setState(Arm::ALLIANCESCORE); // score on alliance stake
-        }
-
+        else {
+            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) && !shift) {
+                arm.toggleReady(); // cycle between stow and load positions
+            };
+            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && !shift) {
+                arm.scoreButton(); // cycle between load and score positions
+            };
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+            arm.raisePos();
+            }
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+                arm.lowerPos();
+            };
+        };
+        
+        
         // left paddle
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && !shift) {
-            arm.scoreButton(); // cycle between load and score positions
-        }
-        else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && shift) {
-            arm.toggleMogoTilt(); // cycle between mogo tilt and untilt positions
-        }
+        
 
         //manual position offset
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
-            arm.raisePos();
-        }
-        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            arm.lowerPos();
-        };
         pros::delay(20);
     }
 }
