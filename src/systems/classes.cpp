@@ -107,6 +107,10 @@ void Arm::raisePos() {
     posOffset++;
 }
 
+void Arm::resetOffset() {
+    posOffset = 0;
+}
+
 void Arm::toggleReady() {
     if (state == STOW) {
         state = READY;

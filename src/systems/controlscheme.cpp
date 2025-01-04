@@ -70,6 +70,9 @@ void armControl(void* param) {
             }
             else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
                 arm.lowerPos();
+            }
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+                arm.resetOffset();
             };
         };
         
