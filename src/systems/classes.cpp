@@ -92,11 +92,12 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor1, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
-    : armMotor1(armMotor1), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scorePos(scorePos), allianceScorePos(allianceScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
+Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
+    : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scorePos(scorePos), allianceScorePos(allianceScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
 
 void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
     armMotor1.set_brake_mode(brakeMode);
+    armMotor2.set_brake_mode(brakeMode);
 }
 
 void Arm::lowerPos() {
@@ -174,4 +175,5 @@ void Arm::updateState() {
     error = (setPosition + posOffset) - currentPosition;
     master.print(0, 0, "%i ", posOffset);
     armMotor1.move(armPID.update(error));
+    armMotor2.move(armPID.update(error));
 }
