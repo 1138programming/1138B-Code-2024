@@ -1,4 +1,4 @@
-c/**
+/**
  * @file lvgl.h
  * Include all LVGL related headers
  */
