@@ -5,41 +5,66 @@
 #include "pros/rtos.hpp"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
+#include "systems/doinker.hpp"
 #include "systems/mogo.hpp"
 #include "systems/arm.hpp"
 
 // DT Controls
-void driveControl(void* param) {
-    while(true) {
+void driveControl() {
         chassis.arcade(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
         pros::delay(20);
-    }
+    
 }
 
 // Intake Buttons
 void intakeControl(void* param) {
     while(true) {
-        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            Intake.In();
-        } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-            Intake.Out();
-        }
-        else {
-            Intake.Stop();
+        bool shift = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1); // keep shift state updated
+        if (!shift) {
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+                Intake.In();
+            } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+                Intake.Out();
+            }
+            else {
+                Intake.Stop();
+            };
         };
         Intake.colorSort();
         pros::delay(20);
     }
 }
 
+// Doinker Buttons
+void doinkerControl() {
+        bool shift = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1); // keep shift state updated
+        if (shift) {
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+                rightDoinker.down();
+            }
+            else {
+                rightDoinker.up();
+            }
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+                leftDoinker.down();
+            }
+            else {
+                leftDoinker.up();
+            }
+        }
+        else {
+            leftDoinker.up();
+            rightDoinker.up();
+        }
+    }
+
 // Mogo Control
-void mogoControl(void* param) {
-    while(true) {
+void mogoControl() {
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
             MogoMech.toggle();
         }
         pros::delay(20);
-    }
+    
 }
 
 void armControl(void* param) {

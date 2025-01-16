@@ -4,8 +4,8 @@
 
 inline pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-void driveControl(void* param);
+void driveControl();
 void intakeControl(void* param);
-void mogoControl(void* param);
-void doinkerControl(void* param);
+void mogoControl();
+void doinkerControl();
 void armControl(void* param);

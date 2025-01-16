@@ -5,6 +5,6 @@
 
 inline pros::Motor intake1(15, pros::MotorGearset::blue);
 inline pros::Optical ringColor(21);
-inline pros::adi::Pneumatics intakeLift(2, false);
+inline pros::adi::Pneumatics intakeLift(3, false);
 
 inline Intake Intake(intake1, ringColor);

@@ -19,7 +19,7 @@ inline pros::IMU imu(13);
 inline double trackWidth = 11.5;
 inline int WheelSize = lemlib::Omniwheel::NEW_275;
 inline int DriveRPM = 450;
-inline int HorzDrift = 18;
+inline int HorzDrift = 12;
 
 // drivetrain settings
 
@@ -69,7 +69,7 @@ inline lemlib::ControllerSettings angular_controller(1, // proportional gain (kP
                                               100, // small error range timeout, in milliseconds
                                               3, // large error range, in degrees
                                               500, // large error range timeout, in milliseconds
-                                              0 // maximum acceleration (slew)
+                                              5 // maximum acceleration (slew)
 );
 
 // Chassis Constructor

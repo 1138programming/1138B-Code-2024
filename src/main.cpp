@@ -7,14 +7,13 @@
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
 #include "taskmanager/taskmanager.hpp"
+#include <cstddef>
 
 
 rd::Selector mySelector({
 });
 
-TaskWrapper driveControlThread(driveControl, nullptr, "Drive Control");
 TaskWrapper intakeControlThread(intakeControl, nullptr, "Intake Control");
-TaskWrapper mogoControlThread(mogoControl, nullptr, "Mogo Control");
 TaskWrapper armControlThread(armControl, nullptr, "Arm Control");
 
 TaskManager controlsManager;
@@ -28,9 +27,7 @@ TaskManager controlsManager;
  */
 
 void initilizeControls() {
-	controlsManager.addTask(&driveControlThread);
 	controlsManager.addTask(&intakeControlThread);
-	controlsManager.addTask(&mogoControlThread);
 	controlsManager.addTask(&armControlThread);
 	controlsManager.startAllTasks();
 }
@@ -77,8 +74,15 @@ void competition_initialize() {}
  */
 
 void autonomous() {
+	float startTime = pros::millis();
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	mySelector.run_auton();
+	controlsManager.stopTask(&intakeControlThread);
+	//mySelector.run_auton();
+	crossFieldSoloAWP();
+	float endTime = pros::millis();
+    float totalTime = endTime - startTime;
+    std::cout << totalTime << std::endl;
+    master.print(0,0,"%f", totalTime);
 }
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -94,8 +98,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	arm.setState(Arm::STOW);
+	controlsManager.startTask(&intakeControlThread);
 	while (true) {
+		mogoControl();
+		doinkerControl();
+		driveControl();
 		controlsManager.checkAndRestartTasks();				 
 		pros::lcd::print(0, "%d", (int)Intake.currentRingColor);
 		pros::delay(20); // Run for 20 ms then update
