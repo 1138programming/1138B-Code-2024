@@ -34,7 +34,8 @@ void initilizeControls() {
 
 void initialize() {
 	//pros::lcd::initialize();
-	chassis.calibrate();
+	chassis.odom_tracker_front_set(&horiz_tracker);
+	chassis.initialize();
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
 	Intake.setSortColor(pros::Color::red);
@@ -75,10 +76,10 @@ void competition_initialize() {}
 
 void autonomous() {
 	float startTime = pros::millis();
-	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+	chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
 	controlsManager.stopTask(&intakeControlThread);
 	//mySelector.run_auton();
-	crossFieldSoloAWP();
+	
 	float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
@@ -105,6 +106,6 @@ void opcontrol() {
 		driveControl();
 		controlsManager.checkAndRestartTasks();				 
 		pros::lcd::print(0, "%d", (int)Intake.currentRingColor);
-		pros::delay(20); // Run for 20 ms then update
+		pros::delay(ez::util::DELAY_TIME);
 	}
 }

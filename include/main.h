@@ -35,7 +35,7 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "lemlib/api.hpp"
+#include "EZ-Template/api.hpp"
 #include "robodash/api.h"
 /**
  * You should add more #includes here

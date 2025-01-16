@@ -1,6 +1,6 @@
 #pragma once
 #include "api.h"
-#include "lemlib/pid.hpp"
+#include "EZ-Template/PID.hpp"
 #include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "pros/optical.hpp"
@@ -54,7 +54,7 @@ class Arm {
         float setPosition;
         float currentPosition;
         float error;
-        lemlib::PID armPID;
+        ez::PID armPID;
         float stowPos;
         float readyPos;
         float scorePos;
@@ -67,7 +67,7 @@ class Arm {
         float gearRatio;
 
     public:
-        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
+        Arm(pros::Motor armMotor1, pros::Motor armMotor2, ez::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
         enum States {
             STOW,
             READY,
