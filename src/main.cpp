@@ -33,6 +33,9 @@ void initilizeControls() {
 }
 
 void initialize() {
+
+	pros::delay(500);
+
 	pros::lcd::initialize();
 	chassis.odom_tracker_front_set(&horiz_tracker);
 
@@ -114,7 +117,8 @@ void autonomous() {
  	chassis.drive_sensor_reset();               // Reset drive sensors to 0
   	chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   	chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-	ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+	//ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+	localAWP();
 	float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
@@ -142,7 +146,7 @@ void screen_print_tracker(ez::tracking_wheel *tracker, std::string name, int lin
 void ez_screen_task() {
   while (true) {
     // Only run this when not connected to a competition switch
-    if (!pros::competition::is_connected()) {
+    if (true) {
       // Blank page for odom debugging
       if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
         // If we're on the first blank page...

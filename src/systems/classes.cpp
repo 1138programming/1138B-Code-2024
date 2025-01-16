@@ -174,7 +174,7 @@ void Arm::updateState() {
             setPosition = mogoUntiltPos;
             break;
     };
-    currentPosition = ((armMotor1.get_position() * gearRatio) + (armMotor2.get_position() * gearRatio) / 2);
+    currentPosition = (((armMotor1.get_position() * gearRatio) + (armMotor2.get_position() * gearRatio)) / 2);
     error = (setPosition + posOffset) - currentPosition;
     master.print(0, 0, "%i ", posOffset);
     armMotor1.move(armPID.compute_error(error, currentPosition));
