@@ -9,24 +9,22 @@
 //intake
 
 Intake::Intake(pros::Motor intakeMotor_, pros::Optical ringColorSensor_)
-    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_) {ringColorSensor.set_integration_time(10);}
+    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_), state(Intake::STOP), oldColor(pros::Color::green) {ringColorSensor.set_integration_time(10); ringColorSensor.set_led_pwm(100);}
+
+void Intake::setState(States newState) {
+    state = newState;
+}
 
 void Intake::Out() {
-    intakeMotor.move_velocity(-intakeSpeed);
+    setState(Intake::OUT);
 }
 
 void Intake::In() {
-    intakeMotor.move_velocity(intakeSpeed);
-    if (sortNeeded) {
-        sortNeeded = false;
-        pros::delay(60);
-        Intake::Out();
-        pros::delay(100);
-    }
+    setState(Intake::IN);
 }
 
 void Intake::Stop() {
-    intakeMotor.move(0);
+    setState(Intake::STOP);
 }
 
 void Intake::setSortColor(pros::Color setColor_) {
@@ -34,18 +32,18 @@ void Intake::setSortColor(pros::Color setColor_) {
 }
 
 void Intake::colorSort() {
-    pros::Color oldColor = pros::Color::green;
-    if ((ringColorSensor.get_hue() > 200 && ringColorSensor.get_hue() < 230) && ringColorSensor.get_proximity() > 25) {
+    if ((ringColorSensor.get_raw().blue > 300 && ringColorSensor.get_raw().red < 500) && ringColorSensor.get_proximity() > 200) {
         currentRingColor = pros::Color::blue;
     }
-    else if ((ringColorSensor.get_hue() > 350 || ringColorSensor.get_hue() < 20) && ringColorSensor.get_proximity() > 50) {
+    else if ((ringColorSensor.get_raw().red > 400 && ringColorSensor.get_raw().blue < 300) && ringColorSensor.get_proximity() > 200) {
         currentRingColor = pros::Color::red;
     }
     else {
         currentRingColor = pros::Color::green;
     };
-    if (currentRingColor != setColor && oldColor != currentRingColor) {
+    if (((currentRingColor != setColor) && (currentRingColor != pros::Color::green)) && (oldColor != currentRingColor)) {
         sortNeeded = true;
+        master.rumble(". . .");
         oldColor = currentRingColor;
     }
     else {
@@ -57,6 +55,24 @@ void Intake::setSpeed(int speed) {
     Intake::intakeSpeed = speed;
 }
 
+void Intake::updateState() {
+    switch (state) {
+        case STOP:
+            intakeMotor.move(0);
+            break;
+        case IN:
+            intakeMotor.move_velocity(intakeSpeed);
+            if (sortNeeded) {
+                sortNeeded = false;
+                pros::delay(150);
+                intakeMotor.move_velocity(-intakeSpeed);
+                pros::delay(100);
+            };
+            break;
+        case OUT:
+            intakeMotor.move_velocity(-intakeSpeed);
+    }
+}
 
 // mogo
 Mogo::Mogo(pros::adi::Pneumatics clampPiston)
@@ -92,7 +108,7 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, ez::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
+Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
     : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scorePos(scorePos), allianceScorePos(allianceScorePos), mogoScorePos(mogoScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
 
 void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
@@ -176,7 +192,7 @@ void Arm::updateState() {
     };
     currentPosition = (((armMotor1.get_position() * gearRatio) + (armMotor2.get_position() * gearRatio)) / 2);
     error = (setPosition + posOffset) - currentPosition;
-    master.print(0, 0, "%i ", posOffset);
-    armMotor1.move(armPID.compute_error(error, currentPosition));
-    armMotor2.move(armPID.compute_error(error, currentPosition));
+    // master.print(0, 0, "%i ", posOffset);
+    armMotor1.move(armPID.update(error));
+    armMotor2.move(armPID.update(error));
 }

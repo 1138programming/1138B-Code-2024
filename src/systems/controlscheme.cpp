@@ -2,6 +2,7 @@
 #include "classes.hpp"
 #include "pros/misc.h"
 #include "systems/controlscheme.hpp"
+#include "pros/misc.hpp"
 #include "pros/rtos.hpp"
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
@@ -11,12 +12,13 @@
 
 // DT Controls
 void driveControl() {
-        chassis.opcontrol_arcade_standard(ez::SPLIT);
+        chassis.arcade(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
 }
 
 // Intake Buttons
 void intakeControl(void* param) {
     while(true) {
+        Intake.colorSort();
         bool shift = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1); // keep shift state updated
         if (!shift) {
             if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
@@ -24,12 +26,12 @@ void intakeControl(void* param) {
             } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
                 Intake.Out();
             }
-            else {
+            else if (!pros::competition::is_autonomous()) {
                 Intake.Stop();
             };
         };
-        Intake.colorSort();
-        pros::delay(20);
+        Intake.updateState();
+        pros::delay(10);
     }
 }
 
@@ -72,7 +74,7 @@ void armControl(void* param) {
 
         arm.updateState(); // keep arm position updated to match state
 
-        // right paddle
+        // // right paddle
         if (shift) {
             if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
                 arm.setState(Arm::ALLIANCESCORE); // score on alliance stake

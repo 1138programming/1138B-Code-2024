@@ -1,29 +1,39 @@
 #pragma once
 #include "api.h"
-#include "EZ-Template/PID.hpp"
+#include "LemLib/PID.hpp"
 #include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "pros/optical.hpp"
 
 // class definitions
 class Intake {
-
+    
     public:
         Intake(pros::Motor intakeMotor, pros::Optical ringColorSensor);
-        void In();
-        void Out();
-        void Stop();
+        enum States {
+            IN,
+            OUT,
+            STOP
+        };
         void setSpeed(int speed); // set the speed for the intake
         void setSortColor(pros::Color setColor);
         void colorSort();
+        void updateState();
+        States getState();
+        void setState(States newState);
         pros::Color currentRingColor;
+        void In();
+        void Out();
+        void Stop();
 
     private:
         pros::Optical ringColorSensor;
         pros::Motor intakeMotor;
         pros::Color setColor;
+        pros::Color oldColor;
         int intakeSpeed;
         bool sortNeeded;
+        States state;
         
 };
 
@@ -54,7 +64,7 @@ class Arm {
         float setPosition;
         float currentPosition;
         float error;
-        ez::PID armPID;
+        lemlib::PID armPID;
         float stowPos;
         float readyPos;
         float scorePos;
@@ -67,7 +77,7 @@ class Arm {
         float gearRatio;
 
     public:
-        Arm(pros::Motor armMotor1, pros::Motor armMotor2, ez::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
+        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
         enum States {
             STOW,
             READY,
