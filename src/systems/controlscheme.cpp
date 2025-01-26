@@ -30,6 +30,9 @@ void intakeControl(void* param) {
                 Intake.Stop();
             };
         };
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+            Intake.enableSort = !Intake.enableSort;
+        }
         Intake.updateState();
         pros::delay(10);
     }

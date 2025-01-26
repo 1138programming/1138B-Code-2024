@@ -1,5 +1,6 @@
 #include "main.h"
 #include "liblvgl/llemu.hpp"
+#include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "systems/classes.hpp"
 #include "systems/drive.hpp"
@@ -49,16 +50,19 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::register_btn0_cb(sortRed);
 	pros::lcd::register_btn1_cb(sortBlue);
-	// Initialize chassis and auton selector
+
 	chassis.calibrate();
 
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
 	Intake.setSortColor(pros::Color::red);
+
 	initilizeControls();
+
 	armMotor1.tare_position();
 	armMotor2.tare_position();
-	ringColor.set_integration_time(10);
+
+	
 	pros::Task([&] {
         while (true) {
             auto p = chassis.getPose();
@@ -66,15 +70,11 @@ void initialize() {
             pros::lcd::print(1, "Y: %f", (p.y));
             pros::lcd::print(2, "Theta: %f", (p.theta));
 			pros::lcd::print(3, "Color Sensor Prox: %d", ringColor.get_proximity());
-			pros::lcd::print(4, "%d", Intake.currentRingColor);
-			pros::lcd::print(5, "R: %d, G: %d, B: %d, C: %d", ringColor.get_raw().red, ringColor.get_raw().green, ringColor.get_raw().blue, ringColor.get_raw().clear);
+			pros::lcd::print(4, "Color Sort Enable: ", Intake.enableSort);
+			pros::lcd::print(5, "Keep %s Rings", Intake.getSortColor());
             pros::delay(10);
         }
     });
-	// // chassis.pid_tuner_enable();
-	//pros::lcd::set_text(1, "Hello PROS User!");
-	//pros::lcd::register_btn1_cb(on_center_button);
-	// mySelector.focus();
 }
 
 /**
@@ -125,7 +125,6 @@ void opcontrol() {
 		doinkerControl();
 		driveControl();
 		controlsManager.checkAndRestartTasks();				 
-		pros::lcd::print(0, "%d", (int)Intake.currentRingColor);
 		pros::delay(20);
 	}
 }

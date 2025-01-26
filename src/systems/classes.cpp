@@ -4,12 +4,13 @@
 #include "pros/rtos.hpp"
 #include "systems/controlscheme.hpp"
 #include "systems/intake.hpp"
+#include <string>
 
 
 //intake
 
 Intake::Intake(pros::Motor intakeMotor_, pros::Optical ringColorSensor_)
-    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_), state(Intake::STOP), oldColor(pros::Color::green) {ringColorSensor.set_integration_time(10); ringColorSensor.set_led_pwm(100);}
+    : intakeMotor(intakeMotor_), ringColorSensor(ringColorSensor_), state(Intake::STOP), oldColor(pros::Color::green), enableSort(true) {ringColorSensor.set_integration_time(10); ringColorSensor.set_led_pwm(100);}
 
 void Intake::setState(States newState) {
     state = newState;
@@ -41,7 +42,7 @@ void Intake::colorSort() {
     else {
         currentRingColor = pros::Color::green;
     };
-    if (((currentRingColor != setColor) && (currentRingColor != pros::Color::green)) && (oldColor != currentRingColor)) {
+    if (enableSort && ((currentRingColor != setColor) && (currentRingColor != pros::Color::green)) && (oldColor != currentRingColor)) {
         sortNeeded = true;
         master.rumble(". . .");
         oldColor = currentRingColor;
@@ -71,6 +72,20 @@ void Intake::updateState() {
             break;
         case OUT:
             intakeMotor.move_velocity(-intakeSpeed);
+    }
+}
+
+std::string Intake::getSortColor() {
+    switch (setColor) {
+        case pros::Color::red:
+            return "Red";
+            break;
+        case pros::Color::blue:
+            return "Blue";
+            break;
+        default:
+            return "";
+            break;
     }
 }
 

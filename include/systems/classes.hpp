@@ -4,6 +4,7 @@
 #include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "pros/optical.hpp"
+#include <string>
 
 // class definitions
 class Intake {
@@ -21,10 +22,12 @@ class Intake {
         void updateState();
         States getState();
         void setState(States newState);
+        bool enableSort;
         pros::Color currentRingColor;
         void In();
         void Out();
         void Stop();
+        std::string getSortColor();
 
     private:
         pros::Optical ringColorSensor;
