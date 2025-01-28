@@ -236,7 +236,7 @@ void Screen::motorPage() {
                 updateMotorButtonColor(motorButton, temperature);
 
                 lv_obj_t* motorLabel = lv_label_create(motorButton);
-                lv_label_set_text_fmt(motorLabel, "%s [%d]: %d°C", motorInfo.motorName, j + 1, (int)temperature);
+                lv_label_set_text_fmt(motorLabel, "%s %d: %d°C", motorInfo.motorName, j + 1, (int)temperature);
                 lv_label_set_long_mode(motorLabel, LV_LABEL_LONG_WRAP);
                 lv_obj_set_size(motorLabel, button_width - 5, LV_SIZE_CONTENT);
                 lv_obj_center(motorLabel);

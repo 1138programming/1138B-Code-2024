@@ -8,4 +8,4 @@
 inline Screen newScreen(
 {{&soloAWPFull, "Signature Event Solo AWP"}}, 
 {{&ringSideMiddle, "6 Ring - Ring Side"}}, 
-{{"Left Drive", &left_motors}, {"Right Drive", &right_motors}, {"Intake", &intake1}, {"Arm 1", &armMotor1}, {"Arm2", &armMotor2}});
+{{"Left", &left_motors}, {"Right", &right_motors}, {"Intake", &intake1}, {"Arm 1", &armMotor1}, {"Arm2", &armMotor2}});
