@@ -1,3 +1,4 @@
+#pragma once
 #include "classes.hpp"
 #include "LemLib/PID.hpp"
 #include "pros/abstract_motor.hpp"

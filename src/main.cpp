@@ -9,26 +9,16 @@
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
 #include "taskmanager/taskmanager.hpp"
+#include "screen/screen.hpp"
 #include <cstddef>
 
-
-rd::Selector mySelector({
-	{"Red Goal Side", &localAWPGoalRed},
-	{"Blue Goal Side", &localAWPGoalBlue}
-});
 
 TaskWrapper intakeControlThread(intakeControl, nullptr, "Intake Control");
 TaskWrapper armControlThread(armControl, nullptr, "Arm Control");
 
 TaskManager controlsManager;
 
-void sortRed() {
-	Intake.setSortColor(pros::Color::red);
-}
 
-void sortBlue() {
-	Intake.setSortColor(pros::Color::blue);
-}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -47,15 +37,12 @@ void initialize() {
 
 	pros::delay(500);
 
-	pros::lcd::initialize();
-	pros::lcd::register_btn0_cb(sortRed);
-	pros::lcd::register_btn1_cb(sortBlue);
-
+	newScreen.init(10);
 	chassis.calibrate();
 
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
-	Intake.setSortColor(pros::Color::red);
+	Intake.setSortColor(pros::Color::blue);
 
 	initilizeControls();
 
@@ -66,12 +53,12 @@ void initialize() {
 	pros::Task([&] {
         while (true) {
             auto p = chassis.getPose();
-            pros::lcd::print(0, "X: %f", (p.x));
-            pros::lcd::print(1, "Y: %f", (p.y));
-            pros::lcd::print(2, "Theta: %f", (p.theta));
-			pros::lcd::print(3, "Color Sensor Prox: %d", ringColor.get_proximity());
-			pros::lcd::print(4, "Color Sort Enable: ", Intake.enableSort);
-			pros::lcd::print(5, "Keep %s Rings", Intake.getSortColor());
+            newScreen.print(0, "X: %f", (p.x));
+            newScreen.print(1, "Y: %f", (p.y));
+            newScreen.print(2, "Theta: %f", (p.theta));
+			newScreen.print(3, "Color Sensor Prox: %d", ringColor.get_proximity());
+			newScreen.print(4, "Color Sort Enabled: %s", Intake.enableSort ? "Yes" : "No");
+			newScreen.print(5, "Keep %s Rings", Intake.getSortColor().c_str());
             pros::delay(10);
         }
     });
