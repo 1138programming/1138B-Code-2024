@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "screen/screenClass.hpp"
+#include "pros/motors.h"
 #include "screen/logo.h"
 #include "systems/intake.hpp"
 
@@ -208,12 +209,12 @@ void Screen::motorPage() {
     for (size_t i = 0; i < motors.size(); i++) {
         const motor_item_t& motorInfo = motors[i];
 
-        if (motorInfo.motorObject) {
+        if (motorInfo.motorPort) {
             // Single motor
             lv_obj_t* motorButton = lv_btn_create(motorScreen);
             lv_obj_set_size(motorButton, button_width, button_height);
 
-            double temperature = motorInfo.motorObject->get_temperature();
+            double temperature = pros::c::motor_get_temperature(motorInfo.motorPort);
             updateMotorButtonColor(motorButton, temperature);
 
             lv_obj_t* motorLabel = lv_label_create(motorButton);
@@ -225,28 +226,6 @@ void Screen::motorPage() {
             int col = i % 5;
             lv_obj_set_pos(motorButton, col * (button_width + spacing), row * (button_height + spacing) + 40);
         }
-
-        if (motorInfo.motorGroupObject) {
-            // MotorGroup - create individual rectangles for each motor in the group
-            for (size_t j = 0; j < motorInfo.motorGroupObject->size(); j++) {
-                lv_obj_t* motorButton = lv_btn_create(motorScreen);
-                lv_obj_set_size(motorButton, button_width, button_height);
-
-                double temperature = motorInfo.motorGroupObject->get_temperature(j);
-                updateMotorButtonColor(motorButton, temperature);
-
-                lv_obj_t* motorLabel = lv_label_create(motorButton);
-                lv_label_set_text_fmt(motorLabel, "%s %d: %d°C", motorInfo.motorName, j + 1, (int)temperature);
-                lv_label_set_long_mode(motorLabel, LV_LABEL_LONG_WRAP);
-                lv_obj_set_size(motorLabel, button_width - 5, LV_SIZE_CONTENT);
-                lv_obj_center(motorLabel);
-
-                // Calculate row and column for each motor
-                int row = (i + j) / 5;  // Adjust row based on group motor count
-                int col = (i + j) % 5;  // Adjust column based on group motor count
-                lv_obj_set_pos(motorButton, col * (button_width + spacing), row * (button_height + spacing) + 40);
-            }
-        }
     }
 }
 
@@ -256,7 +235,7 @@ void Screen::updateMotorData() {
         lv_obj_t* motorButton = motor_buttons[i];  // Assumes motor_buttons is a stored array of motor buttons
 
         // Get the latest temperature data from the motor
-        double temperature = motors[i].motorObject->get_temperature();
+        double temperature = pros::c::motor_get_temperature(motors[i].motorPort);
 
         // Update the button color based on the new temperature
         updateMotorButtonColor(motorButton, temperature);

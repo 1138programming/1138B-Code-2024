@@ -24,17 +24,11 @@ typedef struct {
 
 struct motor_item_t {
     const char* motorName;
-    pros::Motor* motorObject = nullptr;
-    pros::MotorGroup* motorGroupObject = nullptr;
+    int motorPort;
 
      // Constructor for single motors
-    motor_item_t(const char* name, pros::Motor* motor)
-        : motorName(name), motorObject(motor) {}
-
-    // Constructor for motor groups
-    motor_item_t(const char* name, pros::MotorGroup* group)
-        : motorName(name), motorGroupObject(group) {}
-
+    motor_item_t(const char* name, int port)
+        : motorName(name), motorPort(port) {}
 };
 
 // Declare the HomePage class
