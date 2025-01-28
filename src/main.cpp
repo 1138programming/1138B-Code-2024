@@ -59,6 +59,7 @@ void initialize() {
 			newScreen.print(3, "Color Sensor Prox: %d", ringColor.get_proximity());
 			newScreen.print(4, "Color Sort Enabled: %s", Intake.enableSort ? "Yes" : "No");
 			newScreen.print(5, "Keep %s Rings", Intake.getSortColor().c_str());
+			newScreen.updateMotorData();
             pros::delay(10);
         }
     });
@@ -96,9 +97,9 @@ void competition_initialize() {}
 void autonomous() {
 	float startTime = pros::millis();
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
-	// mySelector.run_auton();
+	newScreen.runSelected();
 	// soloAWPFull();
-	ringSideMiddle();
+	// ringSideMiddle();
 	float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
