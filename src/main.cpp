@@ -6,6 +6,7 @@
 #include "systems/drive.hpp"
 #include "systems/intake.hpp"
 #include "systems/arm.hpp"
+#include "systems/mogo.hpp"
 #include "systems/controlscheme.hpp"
 #include "autos.hpp"
 #include "taskmanager/taskmanager.hpp"
@@ -60,6 +61,12 @@ void initialize() {
 			newScreen.print(4, "Color Sort Enabled: %s", Intake.enableSort ? "Yes" : "No");
 			newScreen.print(5, "Keep %s Rings", Intake.getSortColor().c_str());
 			newScreen.updateMotorData();
+			if (Intake.enableSort) {
+				master.print(0, 0, "Keeping %s     ", Intake.getSortColor());
+			}
+			else {
+				master.print(0, 0, "Sorting Off    ");
+			};
             pros::delay(10);
         }
     });
@@ -70,7 +77,9 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+	newScreen.setPage(Screen::HOME);
+}
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
  * Management System or the VEX Competition Switch. This is intended for
@@ -96,6 +105,7 @@ void competition_initialize() {}
 
 void autonomous() {
 	float startTime = pros::millis();
+	newScreen.setPage(Screen::LOGO);
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 	newScreen.runSelected();
 	// soloAWPFull();
@@ -103,10 +113,11 @@ void autonomous() {
 	float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
-    master.print(0,0,"%f", totalTime);
+    master.print(1,0,"%f", totalTime);
 }
 
 void opcontrol() {
+	newScreen.setPage(Screen::LOGO);
 	while (true) {
 		// ez_template_extras();
 		mogoControl();

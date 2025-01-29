@@ -65,14 +65,11 @@ void doinkerControl() {
 void mogoControl() {
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
             MogoMech.toggle();
-        }
-        pros::delay(20);
-    
+        };
 }
 
 void armControl(void* param) {
     while(true) {
-
         bool shift = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1); // keep shift state updated
 
         arm.updateState(); // keep arm position updated to match state

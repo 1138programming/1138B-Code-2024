@@ -1,9 +1,15 @@
+#include "liblvgl/core/lv_obj.h"
+#include "liblvgl/core/lv_obj_pos.h"
+#include "liblvgl/core/lv_obj_style.h"
 #include "liblvgl/lvgl.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include "screen/screenClass.hpp"
+#include "liblvgl/misc/lv_area.h"
+#include "liblvgl/widgets/lv_img.h"
+#include "liblvgl/widgets/lv_label.h"
 #include "pros/motors.h"
 #include "screen/logo.h"
 #include "systems/intake.hpp"
@@ -103,12 +109,12 @@ void Screen::homePage() {
     // Create list and add styles
     list = lv_list_create(homeScreen);
     lv_obj_add_style(list, &list_style, 0);
-    lv_obj_set_size(list, lv_pct(75), lv_pct(100));
+    lv_obj_set_size(list, lv_pct(200/3), lv_pct(100));
     lv_obj_align(list, LV_ALIGN_LEFT_MID, 0, 0);
 
     // Create toggle button
     lv_obj_t* toggle_btn = lv_btn_create(homeScreen);
-    lv_obj_set_size(toggle_btn, lv_pct(25), lv_pct(100 / 3));
+    lv_obj_set_size(toggle_btn, lv_pct(100/3), lv_pct(100 / 3));
     lv_obj_align(toggle_btn, LV_ALIGN_TOP_RIGHT, 0, 1);
     lv_obj_set_style_transform_width(toggle_btn, 0, LV_STATE_PRESSED);
     lv_obj_set_style_transform_height(toggle_btn, 0, LV_STATE_PRESSED);
@@ -125,7 +131,7 @@ void Screen::homePage() {
 
     // Create Motor button
     lv_obj_t* motor_btn = lv_btn_create(homeScreen);
-    lv_obj_set_size(motor_btn, lv_pct(25), lv_pct(100 / 3));
+    lv_obj_set_size(motor_btn, lv_pct(100/3), lv_pct(100 / 3));
     lv_obj_align(motor_btn, LV_ALIGN_RIGHT_MID, 0, 0);
     lv_obj_add_style(motor_btn, &screen_btn_style, LV_STATE_DEFAULT);
     lv_obj_set_style_transform_width(motor_btn, 0, LV_STATE_PRESSED);
@@ -143,7 +149,7 @@ void Screen::homePage() {
 
     // Create Debug button
     lv_obj_t* debug_btn = lv_btn_create(homeScreen);
-    lv_obj_set_size(debug_btn, lv_pct(25), lv_pct(100 / 3));
+    lv_obj_set_size(debug_btn, lv_pct(100/3), lv_pct(100 / 3));
     lv_obj_align(debug_btn, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
     lv_obj_add_style(debug_btn, &screen_btn_style, LV_STATE_DEFAULT);
     lv_obj_set_style_transform_width(debug_btn, 0, LV_STATE_PRESSED);
@@ -212,12 +218,18 @@ void Screen::motorPage() {
         if (motorInfo.motorPort) {
             // Single motor
             lv_obj_t* motorButton = lv_btn_create(motorScreen);
+            motor_buttons.push_back(motorButton);
             lv_obj_set_size(motorButton, button_width, button_height);
 
             double temperature = pros::c::motor_get_temperature(motorInfo.motorPort);
             updateMotorButtonColor(motorButton, temperature);
 
             lv_obj_t* motorLabel = lv_label_create(motorButton);
+            motor_labels.push_back(motorLabel);
+            lv_obj_set_size(motorLabel, lv_pct(100), LV_SIZE_CONTENT);
+            lv_label_set_long_mode(motorLabel, LV_LABEL_LONG_WRAP);
+            lv_obj_set_style_text_color(motorLabel, getMotorLabelColor(temperature), LV_STATE_DEFAULT);
+            lv_obj_set_style_text_align(motorLabel, LV_TEXT_ALIGN_CENTER, LV_STATE_DEFAULT);
             lv_label_set_text_fmt(motorLabel, "%s: %d°C", motorInfo.motorName, (int)temperature);
             lv_obj_center(motorLabel);
 
@@ -241,7 +253,8 @@ void Screen::updateMotorData() {
         updateMotorButtonColor(motorButton, temperature);
 
         // Update the label text with the motor name and the new temperature
-        lv_label_set_text_fmt(motor_labels[i], "%s: %.1f°C", motors[i].motorName, temperature);
+        lv_label_set_text_fmt(motor_labels[i], "%s: %d°C", motors[i].motorName, (int)temperature);
+        updateMotorLabelColor(motor_labels[i], temperature);
     }
 }
 
@@ -295,6 +308,7 @@ void Screen::logoPage() {
     lv_obj_set_size(logoImage, 177, 240);
     lv_img_set_src(logoImage, &logo);
     lv_img_set_zoom(logoImage, 256*0.9);
+    lv_img_set_angle(logoImage, 2700);
     lv_obj_align(logoImage, LV_ALIGN_CENTER, 0, 0); // Align it to the center  
 }
 

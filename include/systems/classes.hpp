@@ -46,9 +46,11 @@ class Mogo {
         void clamp();
         void release();
         void toggle();
+        bool isClamped();
 
     private:
         pros::adi::Pneumatics clampPiston;
+        bool clampState;
 };
 
 class Doinker {

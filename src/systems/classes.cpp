@@ -44,7 +44,6 @@ void Intake::colorSort() {
     };
     if (enableSort && ((currentRingColor != setColor) && (currentRingColor != pros::Color::green)) && (oldColor != currentRingColor)) {
         sortNeeded = true;
-        master.rumble(". . .");
         oldColor = currentRingColor;
     }
     else {
@@ -91,18 +90,25 @@ std::string Intake::getSortColor() {
 
 // mogo
 Mogo::Mogo(pros::adi::Pneumatics clampPiston)
-    : clampPiston(clampPiston) {}
+    : clampPiston(clampPiston), clampState(false) {}
 
 void Mogo::clamp() {
+    clampState = true;
     clampPiston.extend();
 }
 
 void Mogo::release() {
+    clampState = false;
     clampPiston.retract();
 }
 
 void Mogo::toggle() {
+    clampState = !clampState;
     clampPiston.toggle();
+}
+
+bool Mogo::isClamped() {
+    return clampState;
 }
 
 // doinker
