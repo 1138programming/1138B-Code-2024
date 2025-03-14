@@ -43,10 +43,10 @@ lv_color_t getMotorColor(double temperature) {
     if (temperature < 55.0) {
         return level0_color;  // Level 0: Safe (Green)
     }
-    else if (temperature < 60.0) {
+    else if (temperature == 55.0) {
         return level1_color;  // Level 1: Moderate warning (Yellow)
     }
-    else if (temperature < 65.0) {
+    else if (temperature == 60.0) {
         return level2_color;  // Level 2: Increased warning (Orange)
     }
     else {
@@ -68,13 +68,13 @@ lv_color_t getMotorLabelColor(double temperature) {
     lv_color_t level3_color = lv_color_white(); // Light Red
 
     // Determine the level and corresponding color
-    if (temperature < 55.0) {
+    if (temperature <= 55.0) {
         return level0_color;  // Level 0: Safe (Green)
     }
-    else if (temperature < 60.0) {
+    else if (temperature <= 60.0) {
         return level1_color;  // Level 1: Moderate warning (Yellow)
     }
-    else if (temperature < 65.0) {
+    else if (temperature <= 65.0) {
         return level2_color;  // Level 2: Increased warning (Orange)
     }
     else {

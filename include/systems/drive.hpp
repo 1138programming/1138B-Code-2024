@@ -2,6 +2,7 @@
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
+#include "pros/distance.hpp"
 
 // motors
 
@@ -14,11 +15,16 @@ inline pros::MotorGroup right_motors({-16, 17, 21}, pros::MotorGearset::blue);
 // sensors
 
 inline pros::IMU imu(13);
-inline pros::Rotation horzTracking(9);
- inline pros::Rotation vertTracking(8);
+inline pros::Rotation horzTracking(-9);
+ inline pros::Rotation vertTracking(-8);
 
 inline lemlib::TrackingWheel horzTracker(&horzTracking, lemlib::Omniwheel::NEW_2, 1.8125);
 inline lemlib::TrackingWheel vertTracker(&vertTracking, lemlib::Omniwheel::NEW_2, 0);
+
+inline pros::Distance frontDistance(1);
+inline pros::Distance rightDistance(2);
+inline pros::Distance backDistance(5);
+inline pros::Distance leftDistance(6);
 // LEMLIB
 
 inline double trackWidth = 11.5;

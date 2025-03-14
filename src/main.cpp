@@ -1,6 +1,7 @@
 #include "main.h"
 #include "liblvgl/llemu.hpp"
 #include "pros/colors.hpp"
+#include "pros/misc.hpp"
 #include "pros/motors.h"
 #include "systems/classes.hpp"
 #include "systems/drive.hpp"
@@ -38,8 +39,9 @@ void initialize() {
 
 	pros::delay(500);
 
-	newScreen.init(10);
 	chassis.calibrate();
+
+	newScreen.init(10);
 
 	Intake.setSpeed(600);
 	arm.setBrakeMode(MOTOR_BRAKE_HOLD);
@@ -58,15 +60,18 @@ void initialize() {
             newScreen.print(1, "Y: %f", (p.y));
             newScreen.print(2, "Theta: %f", (p.theta));
 			newScreen.print(3, "Color Sensor Prox: %d", ringColor.get_proximity());
-			newScreen.print(4, "Color Sort Enabled: %s", Intake.enableSort ? "Yes" : "No");
-			newScreen.print(5, "Keep %s Rings", Intake.getSortColor().c_str());
+			newScreen.print(4, "R %d, G %d, B %d, C %d", ringColor.get_raw().red, ringColor.get_raw().green, ringColor.get_raw().blue, ringColor.get_raw().clear);
+			newScreen.print(5, "Color Sort Enabled: %s", Intake.enableSort ? "Yes" : "No");
+			newScreen.print(6, "Keep %s Rings", Intake.getSortColor().c_str());
+			newScreen.print(7, "Arm Offset: %d", arm.posOffset);
+			newScreen.print(8, "Front: %.2f, Back: %.2f, Left: %.2f, Right: %.2f", frontDistance.get_distance()/25.4, backDistance.get_distance()/25.4, leftDistance.get_distance()/25.4, rightDistance.get_distance()/25.4);
 			newScreen.updateMotorData();
-			if (Intake.enableSort) {
-				master.print(0, 0, "Keeping %s     ", Intake.getSortColor());
-			}
-			else {
-				master.print(0, 0, "Sorting Off    ");
-			};
+			// if (Intake.enableSort) {
+			// 	master.print(0, 0, "Keeping %s     ", Intake.getSortColor());
+			// }
+			// else {
+			// 	master.print(0, 0, "Sorting Off    ");
+			// };
             pros::delay(10);
         }
     });
@@ -108,16 +113,17 @@ void autonomous() {
 	newScreen.setPage(Screen::LOGO);
 	chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 	newScreen.runSelected();
+	// stateSkills();
 	// soloAWPFull();
 	// ringSideMiddle();
 	float endTime = pros::millis();
     float totalTime = endTime - startTime;
     std::cout << totalTime << std::endl;
-    master.print(1,0,"%f", totalTime);
+    master.print(0,0,"%f", totalTime);
 }
 
 void opcontrol() {
-	newScreen.setPage(Screen::LOGO);
+	if (pros::competition::is_field_control()) {newScreen.setPage(Screen::LOGO);};
 	while (true) {
 		// ez_template_extras();
 		mogoControl();

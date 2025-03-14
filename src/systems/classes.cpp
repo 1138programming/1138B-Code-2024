@@ -33,7 +33,7 @@ void Intake::setSortColor(pros::Color setColor_) {
 }
 
 void Intake::colorSort() {
-    if ((ringColorSensor.get_raw().blue > 300 && ringColorSensor.get_raw().red < 500) && ringColorSensor.get_proximity() > 200) {
+    if ((ringColorSensor.get_raw().blue > 350 && ringColorSensor.get_raw().red < 600) && ringColorSensor.get_proximity() > 200) {
         currentRingColor = pros::Color::blue;
     }
     else if ((ringColorSensor.get_raw().red > 400 && ringColorSensor.get_raw().blue < 300) && ringColorSensor.get_proximity() > 200) {
@@ -129,8 +129,8 @@ void Doinker::toggle() {
 
 
 //arm
-Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
-    : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), scorePos(scorePos), allianceScorePos(allianceScorePos), mogoScorePos(mogoScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
+Arm::Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float ready2Pos, float scorePos, float descorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio)
+    : armMotor1(armMotor1), armMotor2(armMotor2), armPID(armPID), stowPos(stowPos), readyPos(readyPos), ready2Pos(ready2Pos), scorePos(scorePos), descorePos(descorePos), allianceScorePos(allianceScorePos), mogoScorePos(mogoScorePos), mogoTiltPos(mogoTiltPos), mogoUntiltPos(mogoUntiltPos),gearRatio(gearRatio), state(STOW), posOffset(0) {}
 
 void Arm::setBrakeMode(pros::motor_brake_mode_e brakeMode) {
     armMotor1.set_brake_mode(brakeMode);
@@ -176,6 +176,9 @@ void Arm::scoreButton() {
         // Intake.In();
         // pros::delay(100);
         // Intake.Stop();
+        state = READY2;
+    }
+    else if (state == READY2) {
         state = SCORE;
     }
     else {
@@ -195,8 +198,14 @@ void Arm::updateState() {
         case READY:
             setPosition = readyPos;
             break;
+        case READY2:
+            setPosition = ready2Pos;
+            break;
         case SCORE:
             setPosition = scorePos;
+            break;
+        case DESCORE:
+            setPosition = descorePos;
             break;
         case ALLIANCESCORE:
             setPosition = allianceScorePos;

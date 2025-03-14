@@ -49,14 +49,14 @@ void doinkerControl() {
                 rightDoinker.up();
             }
             if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-                leftDoinker.down();
+                rightDoinker.down();
             }
             else {
-                leftDoinker.up();
+                rightDoinker.up();
             }
         }
         else {
-            leftDoinker.up();
+            rightDoinker.up();
             rightDoinker.up();
         }
     }
@@ -77,7 +77,7 @@ void armControl(void* param) {
         // // right paddle
         if (shift) {
             if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-                arm.setState(Arm::ALLIANCESCORE); // score on alliance stake
+                arm.setState(Arm::DESCORE); // score on alliance stake
             };
             if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT) && shift) {
                 arm.toggleMogoTilt(); // cycle between mogo tilt and untilt positions

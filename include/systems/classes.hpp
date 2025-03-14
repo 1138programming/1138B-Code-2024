@@ -72,7 +72,9 @@ class Arm {
         lemlib::PID armPID;
         float stowPos;
         float readyPos;
+        float ready2Pos;
         float scorePos;
+        float descorePos;
         float allianceScorePos;
         float mogoTiltPos;
         float mogoScorePos;
@@ -82,11 +84,13 @@ class Arm {
         float gearRatio;
 
     public:
-        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float scorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
+        Arm(pros::Motor armMotor1, pros::Motor armMotor2, lemlib::PID armPID, float stowPos, float readyPos, float ready2Pos, float scorePos, float descorePos, float allianceScorePos, float mogoScorePos, float mogoTiltPos, float mogoUntiltPos, float gearRatio);
         enum States {
             STOW,
             READY,
+            READY2,
             SCORE,
+            DESCORE,
             ALLIANCESCORE,
             MOGOSCORE,
             MOGOTILT,

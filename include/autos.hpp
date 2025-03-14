@@ -1,5 +1,8 @@
 void localAWPGoalBlue();
 void localAWPGoalRed();
-void soloAWPFull();
-void ringSideMiddle();
+void soloAWPFullRed();
+void soloAWPFullBlue();
+void ringSideMiddleRed();
+void ringSideMiddleBlue();
+void stateSkills();
 void pidTester();
